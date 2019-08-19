@@ -48,18 +48,16 @@ namespace Protean.Providers.Messaging
 
                     base.submission("SendNewsLetter", "", "post", "");
                     xForm xform = new xForm();
-                    //ss
-                    //string Unpersonalised = "Unpersonalised";
-                    //string sendUn = "Send Unpersonalised";
-                    //oFrmElmt = xform.addGroup(moXformElmt, ref Unpersonalised, "", ref sendUn);
+                    string Unpersonalised = "Unpersonalised";
+                    string sendUn = "Send Unpersonalised";
+                    oFrmElmt = xform.addGroup(moXformElmt, ref Unpersonalised, "", ref sendUn);
 
                     XmlElement oElmt;
                     string Long = "long";
-                    //ss
-                    //oElmt = addInput(ref oFrmElmt, "cEmail", true, "Email address to send to",ref Long);
-                    //base.addBind("cEmail", "cEmail");
-                    //oElmt.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
-                    //base.addSubmit(ref oFrmElmt, "SendUnpersonalised", "Send Unpersonalised");
+                    oElmt = addInput(ref oFrmElmt, "cEmail", true, "Email address to send to", ref Long);
+                    base.addBind("cEmail", "cEmail");
+                    oElmt.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
+                    base.addSubmit(ref oFrmElmt, "SendUnpersonalised", "Send Unpersonalised");
 
                     base.Instance.InnerXml = "<cEmail/><cUsers/>";
 
@@ -69,8 +67,8 @@ namespace Protean.Providers.Messaging
                         base.validate();
                         XmlNode oEmailElmt = base.Instance.SelectSingleNode("cEmail");
                         if (!Protean.Tools.Text.IsEmail(oEmailElmt.InnerText))
-                        {//ss
-                         // base.addNote(oElmt.ToString(), xForm.noteTypes.Alert, "Incorrect Email Address Supplied");
+                        {
+                            base.addNote(oElmt.ToString(), xForm.noteTypes.Alert, "Incorrect Email Address Supplied");
                             base.valid = false;
                         }
                         if (base.valid)
@@ -123,61 +121,61 @@ namespace Protean.Providers.Messaging
 
                     base.submission("SendNewsLetter", "", "post", "");
                     //ss
-                    //oFrmElmt = base.addGroup(base.moXformElmt, "Groups", "2col", "Please select a group(s) to send to.");
+                    oFrmElmt = base.addGroup(base.moXformElmt, "Groups", "2col", "Please select a group(s) to send to.");
 
                     cDefaultEmail = (cDefaultEmail.Trim());
 
-                    //oCol1 = base.addGroup(oFrmElmt, "", "col1", "");
-                    //oCol2 = base.addGroup(oFrmElmt, "", "col2", "");
+                    oCol1 = base.addGroup(oFrmElmt, "", "col1", "");
+                    oCol2 = base.addGroup(oFrmElmt, "", "col2", "");
 
                     XmlElement oElmt;
                     string req = "required long";
-                    //oElmt = base.addInput(ref oCol1, "cDefaultEmail", true, "Email address to send from", ref req);
-                    //base.addBind("cDefaultEmail", "cDefaultEmail", "true()");
-                    //oElmt.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
+                    oElmt = base.addInput(ref oCol1, "cDefaultEmail", true, "Email address to send from", ref req);
+                    base.addBind("cDefaultEmail", "cDefaultEmail", "true()");
+                    oElmt.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
 
-                    //XmlElement oElmt2;
-                    //oElmt2 = base.addInput(ref oCol1, "cDefaultEmailName", true, "Name to send from", "required long");
-                    //base.addBind("cDefaultEmailName", "cDefaultEmailName", "true()");
-                    //oElmt2.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
+                    XmlElement oElmt2;
+                    oElmt2 = base.addInput(ref oCol1, "cDefaultEmailName", true, "Name to send from", "required long");
+                    base.addBind("cDefaultEmailName", "cDefaultEmailName", "true()");
+                    oElmt2.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
 
-                    //oElmt2 = base.addInput(ref oCol1, "cReplyEmail", true, "Email to Reply to", "required long");
-                    //base.addBind("cReplyEmail", "cReplyEmail", "true()");
-                    //oElmt2.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
-
-
-                    //oElmt2 = base.addInput(ref oCol1, "cCampaignName", true, "Campaign Name", "required long");
-                    //base.addBind("cCampaignName", "cCampaignName", "true()");
-                    //oElmt2.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
-
-                    //oElmt2 = base.addInput(ref oCol1, "cSubject", true, "Subject", "required long");
-                    //base.addBind("cSubject", "cSubject", "true()");
-                    //oElmt2.AppendChild(ref oElmt.OwnerDocument.CreateElement("value"));
-
-                    //oElmt2 = base.addRange(oCol1, "nSendInHrs", true, "Send in x Hrs", "0", "24", "1");
-                    //base.addBind("nSendInHrs", "nSendInHrs", "true()");
-                    //oElmt2.AppendChild(ref oElmt.OwnerDocument.CreateElement("value"));
-
-                    //oElmt2 = base.addRange(ref oCol1, "nSendInMins", true, "Send in x Mins", "5", "60", "1");
-                    //base.addBind("nSendInMins", "nSendInMins", "true()");
-                    //oElmt2.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
-
-                    // XmlElement oSyncElmt = base.addSelect1(ref oCol1, "SyncMode", true, "Sync List Options", "required multiline", ref ApperanceTypes.Full);
-                    // base.addOption(ref oSyncElmt, "Sync All Groups", "sync");
-                    // base.addOption(ref oSyncElmt, "Sync Selected Groups", "syncSelected");
-                    // base.addOption(ref oSyncElmt, "Send without Syncing Groups to Campaign Monitor", "noSync");
-                    //ss
-                    //base.addBind("SyncMode", "SyncMode", "true()");
+                    oElmt2 = base.addInput(ref oCol1, "cReplyEmail", true, "Email to Reply to", "required long");
+                    base.addBind("cReplyEmail", "cReplyEmail", "true()");
+                    oElmt2.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
 
 
-                    // XmlElement oSelElmt = base.addSelect( ref oCol2, "cGroups", true, "Select Groups to send to", "required multiline", ref ApperanceTypes.Full);
-                    //GetListsAsOptions(ref oSelElmt);
-                    //ss
-                    //base.addBind("cGroups", "cGroups", "true()");
+                    oElmt2 = base.addInput(ref oCol1, "cCampaignName", true, "Campaign Name", "required long");
+                    base.addBind("cCampaignName", "cCampaignName", "true()");
+                    oElmt2.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
 
-                    // oFrmElmt =base.addGroup(base.moXformElmt, "Send", "", "");
+                    oElmt2 = base.addInput(ref oCol1, "cSubject", true, "Subject", "required long");
+                    base.addBind("cSubject", "cSubject", "true()");
+                    oElmt2.AppendChild(ref oElmt.OwnerDocument.CreateElement("value"));
 
-                    //base.addSubmit(ref oFrmElmt, "Send", "Send Via CampaignMonitor");
+                    oElmt2 = base.addRange(oCol1, "nSendInHrs", true, "Send in x Hrs", "0", "24", "1");
+                    base.addBind("nSendInHrs", "nSendInHrs", "true()");
+                    oElmt2.AppendChild(ref oElmt.OwnerDocument.CreateElement("value"));
+
+                    oElmt2 = base.addRange(ref oCol1, "nSendInMins", true, "Send in x Mins", "5", "60", "1");
+                    base.addBind("nSendInMins", "nSendInMins", "true()");
+                    oElmt2.AppendChild(oElmt.OwnerDocument.CreateElement("value"));
+
+                    XmlElement oSyncElmt = base.addSelect1(ref oCol1, "SyncMode", true, "Sync List Options", "required multiline", ref ApperanceTypes.Full);
+                    base.addOption(ref oSyncElmt, "Sync All Groups", "sync");
+                    base.addOption(ref oSyncElmt, "Sync Selected Groups", "syncSelected");
+                    base.addOption(ref oSyncElmt, "Send without Syncing Groups to Campaign Monitor", "noSync");
+                  
+                    base.addBind("SyncMode", "SyncMode", "true()");
+
+
+                    XmlElement oSelElmt = base.addSelect(ref oCol2, "cGroups", true, "Select Groups to send to", "required multiline", ref ApperanceTypes.Full);
+                    GetListsAsOptions(ref oSelElmt);
+                   
+                    base.addBind("cGroups", "cGroups", "true()");
+
+                    oFrmElmt = base.addGroup(base.moXformElmt, "Send", "", "");
+
+                    base.addSubmit(ref oFrmElmt, "Send", "Send Via CampaignMonitor");
 
                     base.Instance.InnerXml = "<cGroups/><cDefaultEmail>" + cDefaultEmail + "</cDefaultEmail><cDefaultEmailName>" + cDefaultEmailName + "</cDefaultEmailName><cReplyEmail>" + cDefaultEmail + "</cReplyEmail><cCampaignName>" + cPageName + "</cCampaignName><cSubject>" + cPageName + "</cSubject><nSendInHrs>0</nSendInHrs><nSendInMins>5</nSendInMins><SyncMode>syncSelected</SyncMode>";
 
@@ -188,8 +186,8 @@ namespace Protean.Providers.Messaging
                         XmlNode oEmailElmt = base.Instance.SelectSingleNode("cDefaultEmail");
 
                         if (!Tools.Text.IsEmail(oEmailElmt.InnerText.Trim()))
-                        {//ss
-                            //base.addNote(oElmt.ToString(), xForm.noteTypes.Alert, "Incorrect Email Address Supplied");
+                        {
+                            base.addNote(oElmt.ToString(), xForm.noteTypes.Alert, "Incorrect Email Address Supplied");
                             base.valid = false;
                         }
 
@@ -197,8 +195,7 @@ namespace Protean.Providers.Messaging
                         {
 
                             // Sync the Groups
-                            //ss
-                            //Protean.Providers.Messaging.CampaignMonitor.AdminProcess AdminProcess = myWeb;
+                            Protean.Providers.Messaging.CampaignMonitor.AdminProcess AdminProcess = myWeb;
                             string innerXml = base.Instance.SelectSingleNode("cGroups").InnerText.ToString();
                             string[] SubscriberListIds = innerXml.Split(new char[] { ',' });
                             List<string> ListIds = new List<string>();
@@ -217,17 +214,15 @@ namespace Protean.Providers.Messaging
                             {
                                 case "sync":
                                     {
-                                        //ss
-                                        //AdminProcess.SyncLists();
+                                        AdminProcess.SyncLists();
                                         break;
                                     }
 
                                 case "syncSelected":
                                     {
-                                        //ss
-                                        //foreach (var listId in SubscriberListIds)
+                                        foreach (var listId in SubscriberListIds)
 
-                                        // AdminProcess.SyncLists(0, listId);
+                                         AdminProcess.SyncLists(0, listId);
                                         break;
                                     }
 
@@ -272,8 +267,8 @@ namespace Protean.Providers.Messaging
 
                                 if (campaignId is CampaignMonitorAPIWrapper.CampaignMonitorAPI.Result)
                                 {
-                                    //ss 
-                                    //base.addNote(oFrmElmt, xForm.noteTypes.Alert, campaignId.Message, true);
+                                   
+                                    base.addNote(oFrmElmt, xForm.noteTypes.Alert, campaignId.Message, true);
                                     base.valid = false;
                                 }
                                 else
@@ -292,18 +287,18 @@ namespace Protean.Providers.Messaging
                                         thisCampaign.Send(FromEmail, sendDateTime);
                                         moDbHelper.logActivity(dbHelper.ActivityType.Email, myWeb.mnUserId, nPageId, 0, base.Instance.OuterXml);
                                         moDbHelper.CommitLogToDB(dbHelper.ActivityType.NewsLetterSent, myWeb.mnUserId, myWeb.moSession.SessionID, DateTime.Now, myWeb.mnPageId, 0, "", true);
-                                        // base.addNote(oFrmElmt.ToString(), xForm.noteTypes.Alert, "Message Sent", true);
+                                        base.addNote(oFrmElmt.ToString(), xForm.noteTypes.Alert, "Message Sent", true);
                                     }
                                     catch (Exception ex)
-                                    {//ss
-                                        //base.addNote(oFrmElmt.ToString(), xForm.noteTypes.Alert, ex.Message, true);
+                                    {
+                                        base.addNote(oFrmElmt.ToString(), xForm.noteTypes.Alert, ex.Message, true);
                                         base.valid = false;
                                     }
                                 }
                             }
                             catch (Exception ex)
-                            {//ss
-                                //base.addNote(oFrmElmt.ToString(), xForm.noteTypes.Alert, ex.Message, true);
+                            {
+                                base.addNote(oFrmElmt.ToString(), xForm.noteTypes.Alert, ex.Message, true);
                                 base.valid = false;
                             }
                         }
@@ -690,12 +685,12 @@ namespace Protean.Providers.Messaging
                                 bClearEditContext = false;
                                 bLoadStructure = true;
                                 //ss
-                                //if (!(Information.IsNumeric(cVersionKey)))
-                                //    cVersionKey = "0";
+                                if (!(Information.IsNumeric(cVersionKey)))
+                                cVersionKey = "0";
                                 int nContentId;
                                 nContentId = 0;
                                 //ss
-                                //oPageDetail.AppendChild((moAdXfm.xFrmEditContent(myWeb.moRequest["id"]), "", System.Convert.ToInt64(myWeb.moRequest["pgid"]), "", false, nContentId, "" , "", long.Parse(cVersionKey)));
+                                oPageDetail.AppendChild((moAdXfm.xFrmEditContent(myWeb.moRequest["id"]), "", System.Convert.ToInt64(myWeb.moRequest["pgid"]), "", false, nContentId, "" , "", long.Parse(cVersionKey)));
 
                                 if (moAdXfm.valid)
                                 {
@@ -743,12 +738,12 @@ namespace Protean.Providers.Messaging
                             {
                                 string cSubject = "";
                                 //ss
-                                //XmlElement oLocElmt = (XmlElement)(oWeb.GetPageXML("descendant-or-self::MenuItem[@id=" + myWeb.mnPageId + "]").SelectSingleNode);
-                                //if (oLocElmt != null)
-                                //    cSubject = oLocElmt.GetAttribute("name");
-                                //oPageDetail.AppendChild(oAdXfm.xFrmPreviewNewsLetter(myWeb.mnPageId,ref oPageDetail, cSubject));
+                                XmlElement oLocElmt = (XmlElement)(oWeb.GetPageXML("descendant-or-self::MenuItem[@id=" + myWeb.mnPageId + "]").SelectSingleNode);
+                                if (oLocElmt != null)
+                                    cSubject = oLocElmt.GetAttribute("name");
+                                oPageDetail.AppendChild(oAdXfm.xFrmPreviewNewsLetter(myWeb.mnPageId, ref oPageDetail, cSubject));
 
-                                //sAdminLayout = "PreviewMail";
+                                sAdminLayout = "PreviewMail";
                                 break;
                             }
 
@@ -759,11 +754,11 @@ namespace Protean.Providers.Messaging
                                 string cSubject = "";
                                 oWeb.mnMailMenuId = long.Parse(moMailConfig["RootPageId"]);
                                 //ss
-                                //XmlElement oLocElmt = oWeb.GetPageXML.SelectSingleNode("descendant-or-self::MenuItem[@id=" + myWeb.mnPageId + "]");
-                                //if (oLocElmt != null)
-                                //    cSubject = oLocElmt.GetAttribute("name");
+                                XmlElement oLocElmt = oWeb.GetPageXML.SelectSingleNode("descendant-or-self::MenuItem[@id=" + myWeb.mnPageId + "]");
+                                if (oLocElmt != null)
+                                    cSubject = oLocElmt.GetAttribute("name");
 
-                                //oPageDetail.AppendChild(oAdXfm.xFrmSendNewsLetter(myWeb.mnPageId, cSubject, moMailConfig["SenderEmail"], moMailConfig["SenderName"], oPageDetail, moMailConfig["ReplyEmail"]));
+                                oPageDetail.AppendChild(oAdXfm.xFrmSendNewsLetter(myWeb.mnPageId, cSubject, moMailConfig["SenderEmail"], moMailConfig["SenderName"], oPageDetail, moMailConfig["ReplyEmail"]));
                                 oPageDetail.AppendChild(getCampaignReports(myWeb.mnPageId));
                                 break;
                             }
@@ -772,7 +767,7 @@ namespace Protean.Providers.Messaging
                             {
                                 sAdminLayout = "OptOut";
                                 //ss
-                                //oPageDetail.AppendChild(oAdXfm.xFrmAdminOptOut);
+                                oPageDetail.AppendChild(oAdXfm.xFrmAdminOptOut);
                                 break;
                             }
 
@@ -785,11 +780,11 @@ namespace Protean.Providers.Messaging
                             {
                                 bLoadStructure = true;
                                 //ss
-                                //oPageDetail.AppendChild(oAdXfm.xFrmDeletePage(myWeb.moRequest["pgid"]));
-                                //if (oAdXfm.valid)
-                                //    myWeb.msRedirectOnEnd = "/?ewCmd=MailingList";
-                                //else
-                                //    sAdminLayout = "AdminXForm";
+                                oPageDetail.AppendChild(oAdXfm.xFrmDeletePage(myWeb.moRequest["pgid"]));
+                                if (oAdXfm.valid)
+                                    myWeb.msRedirectOnEnd = "/?ewCmd=MailingList";
+                                else
+                                    sAdminLayout = "AdminXForm";
                                 break;
                             }
 
@@ -911,7 +906,7 @@ namespace Protean.Providers.Messaging
                         stateObj.EwGroupID = oGroup.GetAttribute("id");
                         stateObj.UnSubRemove = unSubBehavoir;
                         //ss
-                        // System.Threading.ThreadPool.QueueUserWorkItem(New System.Threading.WaitCallback(AddressOf Tasks.SyncSingleMember), stateObj)
+                         //System.Threading.ThreadPool.QueueUserWorkItem(New System.Threading.WaitCallback(AddressOf Tasks.SyncSingleMember), stateObj)
                         finished.AddCount();
                         ThreadPool.QueueUserWorkItem(state =>
                         {
@@ -954,17 +949,17 @@ namespace Protean.Providers.Messaging
                     Campaigns = (_api.GetClientCampaigns(moMailConfig["ApiKey"], moMailConfig["ClientID"]));
                     CampElmt = base.moPageXML.CreateElement("Campaigns");
                     //ss
-                    //for (i = 0; i <= Information.UBound(Campaigns as object[]); i++)
-                    //{
+                    for (i = 0; i <= Information.UBound(Campaigns as object[]); i++)
+                    {
 
-                    //    //Campaign = Campaigns(i);
-                    //    //CampElmt2 = base.moPageXML.CreateElement("Campaign");
-                    //    //CampElmt2.SetAttribute("id", Campaign.CampaignID);
-                    //    //CampElmt2.SetAttribute("name", Campaign.Name);
-                    //    //CampElmt2.SetAttribute("subject", Campaign.Subject);
-                    //    //CampElmt2.SetAttribute("recipients", (Campaign.TotalRecipients).ToString());
-                    //    //CampElmt.AppendChild(CampElmt2);
-                    //}
+                        Campaign = Campaigns(i);
+                        CampElmt2 = base.moPageXML.CreateElement("Campaign");
+                        CampElmt2.SetAttribute("id", Campaign.CampaignID);
+                        CampElmt2.SetAttribute("name", Campaign.Name);
+                        CampElmt2.SetAttribute("subject", Campaign.Subject);
+                        CampElmt2.SetAttribute("recipients", (Campaign.TotalRecipients).ToString());
+                        CampElmt.AppendChild(CampElmt2);
+                    }
                     oPageDetail.AppendChild(CampElmt);
                 }
                 catch (Exception ex)
@@ -995,13 +990,13 @@ namespace Protean.Providers.Messaging
                     Hashtable hLists = new Hashtable();
                     Lists = _api.GetClientLists(moMailConfig["ApiKey"], moMailConfig["ClientID"]);
                     //ss
-                    //for (var i = 0; i <= Information.UBound(Lists as string[]); i++)
-                    //{
-                    //    // ss
-                    //    //List = Lists(i);
-                    //    //hLists.Add(List.Name, List.ListID);
-                    //    //hDirGroups.Remove(List.Name);
-                    //}
+                    for (var i = 0; i <= Information.UBound(Lists as string[]); i++)
+                    {
+                        ss
+                       List = Lists(i);
+                        hLists.Add(List.Name, List.ListID);
+                        hDirGroups.Remove(List.Name);
+                    }
                     //// DictionaryEntry key;
                     foreach (DictionaryEntry key in hDirGroups)
                     {
@@ -1063,15 +1058,15 @@ namespace Protean.Providers.Messaging
                     Hashtable hLists = new Hashtable();
                     Lists = _api.GetClientLists(moMailConfig["ApiKey"], moMailConfig["ClientID"]);
                     //ss
-                    //for (var i = 0; i <= Information.UBound(Lists as string[]); i++)
-                    //{
-                    //    //ss
-                    //    //List = Lists(i);
-                    //    //XmlElement listElmt = rootElmt.OwnerDocument.CreateElement("List");
-                    //    //listElmt.SetAttribute("name", List.Name);
-                    //    //listElmt.SetAttribute("id", List.ListID);
-                    //    //listsElmt.AppendChild(listElmt);
-                    //}
+                    for (var i = 0; i <= Information.UBound(Lists as string[]); i++)
+                    {
+                       
+                        List = Lists(i);
+                        XmlElement listElmt = rootElmt.OwnerDocument.CreateElement("List");
+                        listElmt.SetAttribute("name", List.Name);
+                        listElmt.SetAttribute("id", List.ListID);
+                        listsElmt.AppendChild(listElmt);
+                    }
 
                     AddListStats Tasks = new AddListStats();
                     System.Threading.ThreadPool.SetMaxThreads(20, 20);
@@ -1079,31 +1074,31 @@ namespace Protean.Providers.Messaging
                     int j = 0;
                     CountdownEvent finished = new CountdownEvent(1);
                     //ss
-                    //for (var i = 0; i <= Information.UBound(Lists as string[]); i++)
-                    //{
-                    //    //ss
-                    //    //List = Lists(i);
-                    //    AddListStats.ListObj stateObj = new AddListStats.ListObj();
-                    //    //stateObj.oMasterList = listsElmt;
-                    //    //stateObj.CmListID = List.ListID;
-                    //    //stateObj.API = _api;
+                    for (var i = 0; i <= Information.UBound(Lists as string[]); i++)
+                    {
+                       
+                        List = Lists(i);
+                        AddListStats.ListObj stateObj = new AddListStats.ListObj();
+                        stateObj.oMasterList = listsElmt;
+                        stateObj.CmListID = List.ListID;
+                        stateObj.API = _api;
 
-                    //    finished.AddCount();
-                    //    ThreadPool.QueueUserWorkItem(state =>
-                    //    {
-                    //        try
-                    //        {
-                    //            Tasks.UpdateListStats(stateObj);
-                    //        }
-                    //        finally
-                    //        {
-                    //            // Signal that the work item is complete.
-                    //            if (finished != null)
-                    //                finished.Signal();
-                    //        }
-                    //    }, stateObj);
-                    //    stateObj = null;
-                    //}
+                        finished.AddCount();
+                        ThreadPool.QueueUserWorkItem(state =>
+                        {
+                            try
+                            {
+                                Tasks.UpdateListStats(stateObj);
+                            }
+                            finally
+                            {
+                                //Signal that the work item is complete.
+                                if (finished != null)
+                                    finished.Signal();
+                            }
+                        }, stateObj);
+                        stateObj = null;
+                    }
                     finished.Signal();
                     finished.Wait(100000);
                     finished.Dispose();
@@ -1161,7 +1156,7 @@ namespace Protean.Providers.Messaging
                         foreach (object unSub in UnSubList as object[])
                         {
                             //ss
-                            //if (unSub.EmailAddress == oElmt.SelectSingleNode("User/Email").InnerText)
+                            if (unSub.EmailAddress == oElmt.SelectSingleNode("User/Email").InnerText)
                             bSyncUser = false;
                         }
                         if (bSyncUser)
