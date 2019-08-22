@@ -106,15 +106,16 @@ Partial Public Class Cms
                     End If
 
                     Dim item As Newtonsoft.Json.Linq.JObject
+                    If (jObj("Item") IsNot Nothing) Then
 
-                    For Each item In jObj("Item")
-                        Dim bUnique As Boolean = False
-                        If item.ContainsKey("UniqueProduct") Then
-                            bUnique = item("UniqueProduct")
-                        End If
-                        myCart.AddItem(item("contentId"), item("qty"), Nothing, "", 0, "", bUnique)
-                    Next
-
+                        For Each item In jObj("Item")
+                            Dim bUnique As Boolean = False
+                            If item.ContainsKey("UniqueProduct") Then
+                                bUnique = item("UniqueProduct")
+                            End If
+                            myCart.AddItem(item("contentId"), item("qty"), Nothing, "", 0, "", bUnique)
+                        Next
+                    End If
                     'Output the new cart
                     myCart.GetCart(CartXml.FirstChild)
                     CartXml = updateCartforJSON(CartXml)
@@ -368,19 +369,50 @@ Partial Public Class Cms
                 Try
 
                     Dim CartXml As XmlElement = myWeb.moCart.CreateCartElement(myWeb.moPageXml)
-                    ' myCart.GetCart(CartXml.FirstChild)
-                    'add discount Code option
-                    Return myCart.moDiscount.AddDiscountCode(jObj("Code"))
 
-                    'Output the new cart
+                    If Not (jObj("Code") Is Nothing) Then
+                        myCart.moDiscount.AddDiscountCode(jObj("Code"))
+
+                        myCart.GetCart(CartXml.FirstChild)
+                        'persist cart
+                        myCart.close()
+                        CartXml = updateCartforJSON(CartXml)
+
+                        Dim jsonString As String = Newtonsoft.Json.JsonConvert.SerializeXmlNode(CartXml, Newtonsoft.Json.Formatting.Indented)
+                        jsonString = jsonString.Replace("""@", """_")
+                        jsonString = jsonString.Replace("#cdata-section", "cDataValue")
+                        Return jsonString
+                    End If
+
+                Catch ex As Exception
+
+                End Try
+            End Function
+
+
+            Public Function RemoveDiscountCode(ByRef myApi As Protean.API, ByRef jObj As Newtonsoft.Json.Linq.JObject) As String
+                Try
+
+                    Dim CartXml As XmlElement = myWeb.moCart.CreateCartElement(myWeb.moPageXml)
+
+
+                    myCart.moDiscount.RemoveDiscountCode()
+
                     myCart.GetCart(CartXml.FirstChild)
                     'persist cart
                     myCart.close()
                     CartXml = updateCartforJSON(CartXml)
 
+                    Dim jsonString As String = Newtonsoft.Json.JsonConvert.SerializeXmlNode(CartXml, Newtonsoft.Json.Formatting.Indented)
+                    jsonString = jsonString.Replace("""@", """_")
+                    jsonString = jsonString.Replace("#cdata-section", "cDataValue")
+                    Return jsonString
+
+
                 Catch ex As Exception
 
                 End Try
+
             End Function
 
 
