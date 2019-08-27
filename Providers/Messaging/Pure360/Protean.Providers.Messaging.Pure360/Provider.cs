@@ -10,7 +10,7 @@ using System.Net;
 using System.Threading;
 using static Protean.Cms;
 using Microsoft.VisualBasic;
-
+using Protean.Providers.Messaging.Pure360Library.paint;
 
 namespace Protean.Providers.Messaging
 {
@@ -324,34 +324,56 @@ namespace Protean.Providers.Messaging
                 try
                 {
                     // Dim _api As CampaignMonitorAPIWrapper.CampaignMonitorAPI.api = New CampaignMonitorAPI.api()
-                    object Lists;
-                    object Segments;
-                    createsend_dotnet.BasicList List;
-                    createsend_dotnet.BasicSegment Segment;
+                    //CampaignMonitorAPIWrapper.CampaignMonitorAPI.api _api = new CampaignMonitorAPIWrapper.CampaignMonitorAPI.api();
+                  
+                    PaintMethods p = new PaintMethods();
+                    p.login(moMailConfig["P360Username"].ToString(), moMailConfig["P360Password"].ToString());
+                    
+                    Hashtable searchInput = new Hashtable();
+                    Hashtable resultOutput = null;
+                    string listName="New Master list";
+                    searchInput.Add("listName", listName);
+                    resultOutput = p.searchExactMatch("bus_facade_campaign_list", searchInput);
+
+                  
+                    
+                    //p.search()
+                    //object Lists;
+                    //object Segments;
+                    //createsend_dotnet.BasicList List;
+                    //createsend_dotnet.BasicSegment Segment;
 
                     //createsend_dotnet.ApiKeyAuthenticationDetails cmAuth = new createsend_dotnet.ApiKeyAuthenticationDetails(moMailConfig["ApiKey"]);
                     //createsend_dotnet.Client CMclient = new createsend_dotnet.Client(cmAuth, moMailConfig["ClientID"]);
 
-
-
-
-                    // gets the lists for the client
-                    Hashtable hLists = new Hashtable();
+                    //// gets the lists for the client
+                    //Hashtable hLists = new Hashtable();
                     //Lists = CMclient.Lists();
                     //Segments = CMclient.Segments();
-                    //ss
-                    //for (int i = 0; i <=Microsoft.VisualBasic.Information.UBound(Lists as object[]); i++)
-                    //{
 
-                    //List =Lists[i];
-                    //base.addOption(ref oSelElmt, List.Name, List.ListID);
-                    //for (var j = 0; j <= Information.UBound(Segments as object[]); j++)
-                    //{
-                    //    Segment = Segments[j];
-                    //    if (Segment.ListID == List.ListID)
-                    //        base.addOption(ref oSelElmt, "--- " + Segment.Title, "SEGMENT" + Segment.SegmentID);
-                    //}
-                    //}
+                    var Lists = new[]
+                      {
+                        new { Name = "Sonali", ListID=8 },
+                        new { Name = "Monali", ListID=2 },
+                        new { Name = "Pranali", ListID=14 }
+                        };
+
+                    var Segments = new[]
+                  {
+                        new { Title = "ABC", SegmentID=8 },
+                        new { Title = "Whiskers", SegmentID=2 },
+                        new { Title = "Sasha", SegmentID=14 }
+                        };
+
+                    foreach (var List in Lists)
+                    {
+                        base.addOption(ref oSelElmt, List.Name,(List.ListID).ToString());
+                        foreach (var Segment in Segments )
+                        {
+                            /* if (Segment.ListID == List.ListID)*/
+                            base.addOption(ref oSelElmt, "--- " + Segment.Title, "SEGMENT" + Segment.SegmentID);
+                        }
+                    }
 
                     return oSelElmt;
                 }

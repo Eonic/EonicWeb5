@@ -177,7 +177,7 @@ namespace Protean.Providers.Messaging.Pure360Library.paint
             paintKeyValuePair[] entityPairs = null;
             paintKeyValuePair[] processPairs = null;
             paintKeyValuePair[] resultPairs = null;
-            paintService ps = null;
+            paintService ps = new paintService();// null;
             Hashtable resultOutput = null;
 
             // Check that the context is valid

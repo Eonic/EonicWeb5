@@ -20,7 +20,7 @@ namespace Protean.Providers.Messaging
 
             public delegate void OnErrorEventHandler(object sender, Protean.Tools.Errors.ErrorEventArgs e);
 
-            private const string mcModuleName = "Protean.CampaignMonitorTools.Modules";
+            private const string mcModuleName = "Protean.Pure360Tools.Modules";
 
             private System.Collections.Specialized.NameValueCollection moMailConfig = (System.Collections.Specialized.NameValueCollection)WebConfigurationManager.GetWebApplicationSection("protean/mailinglist");
 
