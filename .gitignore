@@ -16,3 +16,10 @@
 /Assemblies/ProteanCMS/obj
 /.vs/ProteanCMS/v16/Server/sqlite3
 /.vs/ProteanCMSInstaller/v16
+/Assemblies/ProteanCMS/CMS/Cart/PaymentProviders/XElement.vb
+/Providers/Messaging/CampaignMonitor/bin/Debug/System.Web.Services.xml
+/Providers/Messaging/Pure360/Protean.Providers.Messaging.Pure360/bin/Debug/Protean.Providers.Messaging.Pure360.pdb
+/Providers/Messaging/Pure360/Protean.Providers.Messaging.Pure360/bin/Debug/Protean.Providers.Messaging.Pure360.dll
+/Providers/Payment/WorldPay/WorldPay/Sdk.vb
+/Providers/Payment/WorldPay/WorldpayRestClient.vb
+/wwwroot/bin/ru-ru/JavaScriptEngineSwitcher.Msie.resources.dll
