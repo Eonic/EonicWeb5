@@ -39,7 +39,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\CampaignMonitor\bin\Release\createsend-dotnet.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.Smo, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
@@ -56,7 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="paint\PaintMethods.cs" />
     <Compile Include="paint\PaintSecurityException.cs" />
@@ -69,7 +67,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Provide.cs" />
+    <Compile Include="Provider.cs" />
     <Compile Include="Web References\com.pure360.paint\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

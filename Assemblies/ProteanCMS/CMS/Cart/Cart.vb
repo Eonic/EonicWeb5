@@ -1353,33 +1353,39 @@ processFlow:
                             End If
                         End If
 
-                        Dim oOptionXform As xForm = optionsXform(oElmt)
 
-                        If Not oOptionXform.valid Then
-
-
-                            Dim oContentsElmt As XmlElement = moPageXml.SelectSingleNode("/Page/Contents")
-                            If oContentsElmt Is Nothing Then
-                                oContentsElmt = moPageXml.CreateElement("Contents")
-                                If moPageXml.DocumentElement Is Nothing Then
-                                    Err.Raise(1004, "addressSubProcess", " PAGE IS NOT CREATED")
-                                Else
-                                    moPageXml.DocumentElement.AppendChild(oContentsElmt)
-                                End If
-                            End If
-                            oContentsElmt.AppendChild(oOptionXform.moXformElmt)
-
-                            'moPageXml.SelectSingleNode("/Page/Contents").AppendChild(oOptionXform.moXformElmt)
-
-                            If Not cRepeatPaymentError = "" Then
-                                oOptionXform.addNote(oOptionXform.moXformElmt.SelectSingleNode("group"), xForm.noteTypes.Alert, cRepeatPaymentError, True)
-                            End If
-                        Else
+                        If mcPaymentMethod <> "" And Not moCartXml.SelectSingleNode("Order/Shipping") Is Nothing Then
                             mnProcessId = 5
                             mcCartCmd = "EnterPaymentDetails"
                             '   execute next step unless form filled out wrong / not in db
                             GoTo processFlow
+                        Else
+                            Dim oOptionXform As xForm = optionsXform(oElmt)
+                            If oOptionXform.valid Then
+                                mnProcessId = 5
+                                mcCartCmd = "EnterPaymentDetails"
+                                '   execute next step unless form filled out wrong / not in db
+                                GoTo processFlow
+                            Else
+                                Dim oContentsElmt As XmlElement = moPageXml.SelectSingleNode("/Page/Contents")
+                                If oContentsElmt Is Nothing Then
+                                    oContentsElmt = moPageXml.CreateElement("Contents")
+                                    If moPageXml.DocumentElement Is Nothing Then
+                                        Err.Raise(1004, "addressSubProcess", " PAGE IS NOT CREATED")
+                                    Else
+                                        moPageXml.DocumentElement.AppendChild(oContentsElmt)
+                                    End If
+                                End If
+                                oContentsElmt.AppendChild(oOptionXform.moXformElmt)
+
+                                'moPageXml.SelectSingleNode("/Page/Contents").AppendChild(oOptionXform.moXformElmt)
+
+                                If Not cRepeatPaymentError = "" Then
+                                    oOptionXform.addNote(oOptionXform.moXformElmt.SelectSingleNode("group"), xForm.noteTypes.Alert, cRepeatPaymentError, True)
+                                End If
+                            End If
                         End If
+
 
                     Case "Redirect3ds"
 
@@ -1647,7 +1653,7 @@ processFlow:
                     Dim MerchantEmailTemplatePath As String = IIf(moCartConfig("MerchantEmailTemplatePath") <> "", moCartConfig("MerchantEmailTemplatePath"), "/xsl/Cart/mailOrderMerchant.xsl")
 
                     'send to customer
-                    sMessageResponse = emailCart(oCartElmt, CustomerEmailTemplatePath, moCartConfig("MerchantName"), moCartConfig("MerchantEmail"), (oCartElmt.FirstChild.SelectSingleNode("Contact[@type='Billing Address']/Email").InnerText), cSubject)
+                    sMessageResponse = emailCart(oCartElmt, CustomerEmailTemplatePath, moCartConfig("MerchantName"), moCartConfig("MerchantEmail"), (oCartElmt.FirstChild.SelectSingleNode("Contact[@type='Billing Address']/Email").InnerText), cSubject,, moCartConfig("CustomerAttachmentTemplatePath"))
 
                     'Send to merchant
                     sMessageResponse = emailCart(oCartElmt, MerchantEmailTemplatePath, (oCartElmt.FirstChild.SelectSingleNode("Contact[@type='Billing Address']/GivenName").InnerText), (oCartElmt.FirstChild.SelectSingleNode("Contact[@type='Billing Address']/Email").InnerText), moCartConfig("MerchantEmail"), cSubject)
@@ -3443,6 +3449,10 @@ processFlow:
             Dim oContactXform As xForm
             Dim submitPrefix As String = "cartBill"
             Dim cProcessInfo As String = submitPrefix
+            Dim oPay As PaymentProviders
+            Dim buttonRef As String = ""
+            Dim bSubmitPaymentMethod As Boolean = False
+
             Try
 
                 If cAddressType.Contains("Delivery") Then submitPrefix = "cartDel"
@@ -3452,10 +3462,26 @@ processFlow:
                     GetCart(oCartElmt)
                 Else
                     oContactXform = contactXform(cAddressType, , , mcCartCmd)
+
+                    If moPay Is Nothing Then
+                        oPay = New PaymentProviders(myWeb)
+                    Else
+                        oPay = moPay
+                    End If
+                    oPay.mcCurrency = mcCurrency
+
                     GetCart(oCartElmt)
+
+                    If Not oCartElmt.SelectSingleNode("Shipping") Is Nothing Then
+                        ' we already have shipping selected threfore we can skip Options Xform
+                        Dim oSubmitBtn As XmlElement = oContactXform.moXformElmt.SelectSingleNode("group/submit")
+                        buttonRef = oSubmitBtn.GetAttribute("ref")
+                        oPay.getPaymentMethodButtons(oContactXform, oContactXform.moXformElmt.SelectSingleNode("group"), 0)
+                        bSubmitPaymentMethod = True
+                    End If
                 End If
 
-                If oContactXform.valid = False Then
+                    If oContactXform.valid = False Then
                     'show the form
                     Dim oContentElmt As XmlElement = moPageXml.SelectSingleNode("/Page/Contents")
                     If oContentElmt Is Nothing Then
@@ -3496,14 +3522,19 @@ processFlow:
                             Or oContactXform.moXformElmt.GetAttribute("cartCmd") = "ChoosePaymentShippingOption" _
                             Then
 
+                            If bSubmitPaymentMethod Then
+                                ' we have payment method buttons on the form.
+                                mcPaymentMethod = myWeb.moRequest(buttonRef)
+                            End If
+
                             mcCartCmd = "ChoosePaymentShippingOption"
                             mnProcessId = 3
 
                         Else
-                            'If mbEwMembership = True And myWeb.mnUserId <> 0 Then
-                            '    'all handled in pick form
-                            'Else
-                            Dim BillingAddressID As Long = setCurrentBillingAddress(myWeb.mnUserId, 0)
+                                'If mbEwMembership = True And myWeb.mnUserId <> 0 Then
+                                '    'all handled in pick form
+                                'Else
+                                Dim BillingAddressID As Long = setCurrentBillingAddress(myWeb.mnUserId, 0)
                             If myWeb.moRequest(submitPrefix & "editAddress" & BillingAddressID) <> "" Then
                                 'we are editing an address form the pick address form so lets go back.
                                 mcCartCmd = "Billing"
@@ -3551,6 +3582,9 @@ processFlow:
                                     Dim sSql As String = "Select nContactKey from tblCartContact where cContactType = 'Delivery Address' and nContactCartid=" & mnCartId
                                     Dim DeliveryAddressID As String = moDBHelper.ExeProcessSqlScalar(sSql)
                                     useSavedAddressesOnCart(BillingAddressID, DeliveryAddressID)
+
+                                    mcPaymentMethod = myWeb.moRequest(buttonRef)
+
                                     mcCartCmd = "ChoosePaymentShippingOption"
                                     mnProcessId = 3
                                 Else
@@ -5368,133 +5402,142 @@ processFlow:
                     oPaymentCfg = WebConfigurationManager.GetWebApplicationSection("protean/payment")
                     'more than one..
 
+                    Dim bPaymentTypeButtons As Boolean = False
+                    If LCase(moCartConfig("PaymentTypeButtons")) = "on" Then bPaymentTypeButtons = True
+
                     bFirstRow = True
-                    If Not oPaymentCfg Is Nothing Then
-                        If nAmount = 0 And nRepeatAmount = 0 Then
+                        If Not oPaymentCfg Is Nothing Then
+                            If nAmount = 0 And nRepeatAmount = 0 Then
 
-                            oOptXform.Instance.SelectSingleNode("cPaymentMethod").InnerText = "No Charge"
-                            Dim oSelectElmt As XmlElement = oOptXform.addSelect1(oGrpElmt, "cPaymentMethod", False, "Payment Method", "radios multiline", xForm.ApperanceTypes.Full)
-                            oOptXform.addOption(oSelectElmt, "No Charge", "No Charge")
-                            bHidePayment = False
-                            AllowedPaymentMethods.Add("No Charge")
-
-                        ElseIf oPaymentCfg.SelectNodes("provider").Count > 1 Then
-
-                            Dim oSelectElmt As XmlElement
-                            oSelectElmt = oOptXform.moXformElmt.SelectSingleNode("descendant-or-self::select1[@ref='cPaymentMethod']")
-                            If oSelectElmt Is Nothing Then
-                                oSelectElmt = oOptXform.addSelect1(oGrpElmt, "cPaymentMethod", False, "Payment Method", "radios multiline", xForm.ApperanceTypes.Full)
-                            End If
-                            Dim nOptCount As Integer = oPay.getPaymentMethods(oOptXform, oSelectElmt, nAmount, mcPaymentMethod)
-
-                            'Code Moved to Get PaymentMethods
-
-                            If nOptCount = 0 Then
-                                oOptXform.valid = False
-                                oOptXform.addNote(oGrpElmt, xForm.noteTypes.Alert, "There is no method of payment available for your account - please contact the site administrator.")
-                            ElseIf nOptCount = 1 Then
-                                'hide the options
-                                oSelectElmt.SetAttribute("class", "hidden")
-                            End If
-
-                            'step throught the payment methods to set as allowed.
-                            Dim oOptElmt As XmlElement
-                            For Each oOptElmt In oSelectElmt.SelectNodes("item")
-                                AllowedPaymentMethods.Add(oOptElmt.SelectSingleNode("value").InnerText)
-                            Next
-
-
-                        ElseIf oPaymentCfg.SelectNodes("provider").Count = 1 Then
-                            'or just one
-
-                            If oPay.HasRepeatPayments Then
+                                oOptXform.Instance.SelectSingleNode("cPaymentMethod").InnerText = "No Charge"
                                 Dim oSelectElmt As XmlElement = oOptXform.addSelect1(oGrpElmt, "cPaymentMethod", False, "Payment Method", "radios multiline", xForm.ApperanceTypes.Full)
-                                oPay.ReturnRepeatPayments(oPaymentCfg.SelectSingleNode("provider/@name").InnerText, oOptXform, oSelectElmt)
-
-                                oOptXform.addOption(oSelectElmt, oPaymentCfg.SelectSingleNode("provider/description").Attributes("value").Value, oPaymentCfg.SelectSingleNode("provider").Attributes("name").Value)
+                                oOptXform.addOption(oSelectElmt, "No Charge", "No Charge")
                                 bHidePayment = False
-                                AllowedPaymentMethods.Add(oPaymentCfg.SelectSingleNode("provider/@name").InnerText)
+                                AllowedPaymentMethods.Add("No Charge")
+
+                            ElseIf oPaymentCfg.SelectNodes("provider").Count > 1 Then
+
+                                If Not bPaymentTypeButtons Then
+                                    Dim oSelectElmt As XmlElement
+                                    oSelectElmt = oOptXform.moXformElmt.SelectSingleNode("descendant-or-self::select1[@ref='cPaymentMethod']")
+                                    If oSelectElmt Is Nothing Then
+                                        oSelectElmt = oOptXform.addSelect1(oGrpElmt, "cPaymentMethod", False, "Payment Method", "radios multiline", xForm.ApperanceTypes.Full)
+                                    End If
+                                    Dim nOptCount As Integer = oPay.getPaymentMethods(oOptXform, oSelectElmt, nAmount, mcPaymentMethod)
+
+                                    'Code Moved to Get PaymentMethods
+
+                                    If nOptCount = 0 Then
+                                        oOptXform.valid = False
+                                        oOptXform.addNote(oGrpElmt, xForm.noteTypes.Alert, "There is no method of payment available for your account - please contact the site administrator.")
+                                    ElseIf nOptCount = 1 Then
+                                        'hide the options
+                                        oSelectElmt.SetAttribute("class", "hidden")
+                                    End If
+
+                                    'step throught the payment methods to set as allowed.
+                                    Dim oOptElmt As XmlElement
+                                    For Each oOptElmt In oSelectElmt.SelectNodes("item")
+                                        AllowedPaymentMethods.Add(oOptElmt.SelectSingleNode("value").InnerText)
+                                    Next
+                                End If
+
+
+
+
+                            ElseIf oPaymentCfg.SelectNodes("provider").Count = 1 Then
+                                'or just one
+                                If Not bPaymentTypeButtons Then
+                                    If oPay.HasRepeatPayments Then
+                                        Dim oSelectElmt As XmlElement = oOptXform.addSelect1(oGrpElmt, "cPaymentMethod", False, "Payment Method", "radios multiline", xForm.ApperanceTypes.Full)
+                                        oPay.ReturnRepeatPayments(oPaymentCfg.SelectSingleNode("provider/@name").InnerText, oOptXform, oSelectElmt)
+
+                                        oOptXform.addOption(oSelectElmt, oPaymentCfg.SelectSingleNode("provider/description").Attributes("value").Value, oPaymentCfg.SelectSingleNode("provider").Attributes("name").Value)
+                                        bHidePayment = False
+                                        AllowedPaymentMethods.Add(oPaymentCfg.SelectSingleNode("provider/@name").InnerText)
+                                    Else
+                                        bHidePayment = True
+                                        oOptXform.addInput(oGrpElmt, "cPaymentMethod", False, oPaymentCfg.SelectSingleNode("provider/@name").InnerText, "hidden")
+                                        oOptXform.Instance.SelectSingleNode("cPaymentMethod").InnerText = oPaymentCfg.SelectSingleNode("provider/@name").InnerText
+                                        AllowedPaymentMethods.Add(oPaymentCfg.SelectSingleNode("provider/@name").InnerText)
+                                    End If
+                                End If
                             Else
-                                bHidePayment = True
-                                oOptXform.addInput(oGrpElmt, "cPaymentMethod", False, oPaymentCfg.SelectSingleNode("provider/@name").InnerText, "hidden")
-                                oOptXform.Instance.SelectSingleNode("cPaymentMethod").InnerText = oPaymentCfg.SelectSingleNode("provider/@name").InnerText
-                                AllowedPaymentMethods.Add(oPaymentCfg.SelectSingleNode("provider/@name").InnerText)
+                                oOptXform.valid = False
+                                oOptXform.addNote(oGrpElmt, xForm.noteTypes.Alert, "There is no method of payment setup on this site - please contact the site administrator.")
                             End If
-
-
-                            'bHidePayment = True
-                            'oOptXform.addInput(oGrpElmt, "cPaymentMethod", False, oPaymentCfg.SelectSingleNode("provider/@name").InnerText, "hidden")
-                            'oOptXform.instance.SelectSingleNode("cPaymentMethod").InnerText = oPaymentCfg.SelectSingleNode("provider/@name").InnerText
-
-                            'Dim oSelectElmt As XmlElement = oOptXform.addSelect1(oGrpElmt, "cPaymentMethod", False, "Payment Method", "radios multiline", xForm.ApperanceTypes.Full)
-                            'oPay.ReturnRepeatPayments(oPaymentCfg.SelectSingleNode("provider/@name").InnerText, oOptXform, oSelectElmt)
                         Else
                             oOptXform.valid = False
                             oOptXform.addNote(oGrpElmt, xForm.noteTypes.Alert, "There is no method of payment setup on this site - please contact the site administrator.")
                         End If
-                    Else
-                        oOptXform.valid = False
-                        oOptXform.addNote(oGrpElmt, xForm.noteTypes.Alert, "There is no method of payment setup on this site - please contact the site administrator.")
-                    End If
 
-                    Dim cTermsTitle As String = "Terms and Conditions"
+                        Dim cTermsTitle As String = "Terms and Conditions"
 
-                    ' Adjust the group title
-                    If bAdjustTitle Then
-                        Dim cGroupTitle As String = "Select Delivery and Payment Option"
-                        If bHideDelivery And bHidePayment Then cGroupTitle = "Terms and Conditions"
-                        If bHideDelivery And Not (bHidePayment) Then cGroupTitle = "Select Payment Option"
-                        If Not (bHideDelivery) And bHidePayment Then cGroupTitle = "Select Delivery Option"
-                        Dim labelElmt As XmlElement = oGrpElmt.SelectSingleNode("label")
-                        labelElmt.InnerText = cGroupTitle
-                        labelElmt.SetAttribute("class", "term3019")
+                        ' Adjust the group title
+                        If bAdjustTitle Then
+                            Dim cGroupTitle As String = "Select Delivery and Payment Option"
+                            If bHideDelivery And bHidePayment Then cGroupTitle = "Terms and Conditions"
+                            If bHideDelivery And Not (bHidePayment) Then cGroupTitle = "Select Payment Option"
+                            If Not (bHideDelivery) And bHidePayment Then cGroupTitle = "Select Delivery Option"
+                            Dim labelElmt As XmlElement = oGrpElmt.SelectSingleNode("label")
+                            labelElmt.InnerText = cGroupTitle
+                            labelElmt.SetAttribute("class", "term3019")
 
-                        ' Just so we don't show the terms and conditions title twice
+                            ' Just so we don't show the terms and conditions title twice
 
-                        If cGroupTitle = "Terms and Conditions" Then
-                            cTermsTitle = ""
+                            If cGroupTitle = "Terms and Conditions" Then
+                                cTermsTitle = ""
+                            End If
+                        End If
+
+                        If bAddTerms Then
+
+                            If oGrpElmt.SelectSingleNode("*[@ref='terms']") Is Nothing Then
+                                oOptXform.addTextArea(oGrpElmt, "terms", False, cTermsTitle, "readonly terms-and-condiditons")
+                            End If
+
+                            If oGrpElmt.SelectSingleNode("*[@ref='confirmterms']") Is Nothing Then
+                                oOptXform.addSelect(oGrpElmt, "confirmterms", False, "&#160;", "", xForm.ApperanceTypes.Full)
+                                oOptXform.addOption(oGrpElmt.LastChild, "I agree to the Terms and Conditions", "Agree")
+                            End If
+
+                            If CInt("0" & moCartConfig("TermsContentId")) > 0 Then
+                                Dim termsElmt As New XmlDocument
+                                termsElmt.LoadXml(moDBHelper.getContentBrief(moCartConfig("TermsContentId")))
+                                mcTermsAndConditions = termsElmt.DocumentElement.InnerXml
+                            Else
+                                mcTermsAndConditions = moCartConfig("TermsAndConditions")
+                            End If
+
+                            If mcTermsAndConditions Is Nothing Then mcTermsAndConditions = ""
+
+                            oOptXform.Instance.SelectSingleNode("terms").InnerXml = mcTermsAndConditions
+
+                        End If
+
+                        oOptXform.addSubmit(oGrpElmt, "optionsForm", "Make Secure Payment")
+
+                        If bPaymentTypeButtons Then
+                            oPay.getPaymentMethodButtons(oOptXform, oOptXform.moXformElmt.SelectSingleNode("group"), 0)
+                            Dim oSubmitBtn As XmlElement
+                            For Each oSubmitBtn In oOptXform.moXformElmt.SelectNodes("descendant-or-self::submit")
+                                AllowedPaymentMethods.Add(oSubmitBtn.GetAttribute("value"))
+                            Next
                         End If
                     End If
 
-                    If bAddTerms Then
+                    oOptXform.valid = False
 
-                        If oGrpElmt.SelectSingleNode("*[@ref='terms']") Is Nothing Then
-                            oOptXform.addTextArea(oGrpElmt, "terms", False, cTermsTitle, "readonly terms-and-condiditons")
-                        End If
-
-                        If oGrpElmt.SelectSingleNode("*[@ref='confirmterms']") Is Nothing Then
-                            oOptXform.addSelect(oGrpElmt, "confirmterms", False, "&#160;", "", xForm.ApperanceTypes.Full)
-                            oOptXform.addOption(oGrpElmt.LastChild, "I agree to the Terms and Conditions", "Agree")
-                        End If
-
-                        If CInt("0" & moCartConfig("TermsContentId")) > 0 Then
-                            Dim termsElmt As New XmlDocument
-                            termsElmt.LoadXml(moDBHelper.getContentBrief(moCartConfig("TermsContentId")))
-                            mcTermsAndConditions = termsElmt.DocumentElement.InnerXml
-                        Else
-                            mcTermsAndConditions = moCartConfig("TermsAndConditions")
-                        End If
-
-                        If mcTermsAndConditions Is Nothing Then mcTermsAndConditions = ""
-
-                        oOptXform.Instance.SelectSingleNode("terms").InnerXml = mcTermsAndConditions
-
-                    End If
-
-                    oOptXform.addSubmit(oGrpElmt, "optionsForm", "Make Secure Payment")
-
+                Dim submittedPaymentMethod As String = myWeb.moRequest("submit")
+                If submittedPaymentMethod = "Make Secure Payment" Then
+                    submittedPaymentMethod = myWeb.moRequest("cPaymentMethod")
                 End If
 
-
-                oOptXform.valid = False
-                If AllowedPaymentMethods.Contains(myWeb.moRequest("cPaymentMethod")) Then ' equates to is submitted
+                If AllowedPaymentMethods.Contains(submittedPaymentMethod) Then ' equates to is submitted
 
                     If myWeb.moRequest("confirmterms") = "Agree" Or Not bAddTerms Then
 
-                        'Save Submissions
-                        If mcPaymentMethod = "" Then
-                            mcPaymentMethod = myWeb.moRequest("cPaymentMethod")
-                        End If
+                        mcPaymentMethod = submittedPaymentMethod
 
                         'if we have a profile split it out, allows for more than one set of settings for each payment method, only done for SecPay right now.
                         If InStr(mcPaymentMethod, "-") Then
@@ -5566,6 +5609,7 @@ processFlow:
             End Try
 
         End Function
+
 
         Public Function getParentCountries(ByRef sTarget As String, ByRef nIndex As Integer) As String
             PerfMon.Log("Cart", "getParentCountries")
@@ -6859,7 +6903,7 @@ processFlow:
             End Try
         End Sub
 
-        Public Function emailCart(ByRef oCartXML As XmlElement, ByVal xsltPath As String, ByVal fromName As String, ByVal fromEmail As String, ByVal recipientEmail As String, ByVal SubjectLine As String, Optional ByVal bEncrypt As Boolean = False) As Object
+        Public Function emailCart(ByRef oCartXML As XmlElement, ByVal xsltPath As String, ByVal fromName As String, ByVal fromEmail As String, ByVal recipientEmail As String, ByVal SubjectLine As String, Optional ByVal bEncrypt As Boolean = False, Optional ByVal cCustomerAttachementTemplatePath As String = "") As Object
             PerfMon.Log("Cart", "emailCart")
             Dim oXml As XmlDocument = New XmlDocument
             Dim cProcessInfo As String = "emailCart"
@@ -6874,7 +6918,17 @@ processFlow:
                 oCartXML.SetAttribute("lang", myWeb.mcPageLanguage)
 
                 Dim oMsg As Messaging = New Messaging
-                cProcessInfo = oMsg.emailer(oCartXML, xsltPath, fromName, fromEmail, recipientEmail, SubjectLine, "Message Sent", "Message Failed")
+                If cCustomerAttachementTemplatePath = "" Then
+
+                    cProcessInfo = oMsg.emailer(oCartXML, xsltPath, fromName, fromEmail, recipientEmail, SubjectLine, "Message Sent", "Message Failed")
+                Else
+                    cCustomerAttachementTemplatePath = ofs.checkCommonFilePath(moConfig("ProjectPath") & cCustomerAttachementTemplatePath)
+
+                    Dim oPDF As New Protean.Tools.pdf
+                    oMsg.addAttachment(oPDF.GetPDFstream(oCartXML, cCustomerAttachementTemplatePath, cCustomerAttachementTemplatePath), "Attachment.pdf")
+                    cProcessInfo = oMsg.emailer(oCartXML, xsltPath, fromName, fromEmail, recipientEmail, SubjectLine, "Message Sent", "Message Failed")
+
+                End If
                 oMsg = Nothing
 
                 Return cProcessInfo
