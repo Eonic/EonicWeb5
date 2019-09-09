@@ -742,6 +742,15 @@ Public Class xForm
 
                 End If
 
+                If Not oBindElmt.GetAttribute("isUnique") = Nothing And bIsThisBindValid Then
+                    'Confirm the contenttype and the field
+
+                    'Generate the xpath if value is in XML within the field
+
+                    'Query the database to confirm if this value is unique.
+
+                End If
+
                 'case for relevant
                 'case for read-only
 
@@ -2383,22 +2392,25 @@ Public Class xForm
 
 
 
-    Function addSubmit(ByRef oContextNode As XmlElement, ByVal sSubmission As String, ByVal sLabel As String, Optional ByVal sRef As String = "submit", Optional ByVal sClass As String = "principle", Optional ByVal sIcon As String = "") As Object
+    Function addSubmit(ByRef oContextNode As XmlElement, ByVal sSubmission As String, ByVal sLabel As String, Optional ByVal sRef As String = "submit", Optional ByVal sClass As String = "principle", Optional ByVal sIcon As String = "", Optional ByVal sValue As String = "") As Object
 
         Dim oIptElmt As XmlElement
         Dim oLabelElmt As XmlElement
         Dim cProcessInfo As String = ""
         Try
-            oIptElmt = moPageXML.CreateElement("submit")
+            oIptElmt = oContextNode.OwnerDocument.CreateElement("submit")
             oIptElmt.SetAttribute("submission", sSubmission)
             oIptElmt.SetAttribute("ref", sRef)
             oIptElmt.SetAttribute("class", sClass)
             If sIcon <> "" Then
                 oIptElmt.SetAttribute("icon", sIcon)
             End If
+            If sValue <> "" Then
+                oIptElmt.SetAttribute("value", sValue)
+            End If
 
             If sLabel <> "" Then
-                oLabelElmt = moPageXML.CreateElement("label")
+                oLabelElmt = oContextNode.OwnerDocument.CreateElement("label")
                 oLabelElmt.InnerText = sLabel
                 oIptElmt.AppendChild(oLabelElmt)
             End If

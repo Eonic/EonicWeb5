@@ -502,7 +502,7 @@
   <!-- -->
   <xsl:template match="/" mode="List_Contact_Details">
     <p class="addButton">
-      <a class="button" href="{$currentPage/@url}?ewCmd=addContact">
+      <a class="button" href="{$currentPage/@url}?memCmd=addContact">
 		  <xsl:attribute name="title">
 			  <!--Add Contact-->
 			  <xsl:call-template name="term4026" />
@@ -566,7 +566,7 @@
         </xsl:if>
       </p>
 		<p class="buttons">
-			<a class="button" href="{$currentPage/@url}?ewCmd=editContact&amp;id={nContactKey}">
+			<a class="button" href="{$currentPage/@url}?memCmd=editContact&amp;id={nContactKey}">
 				<xsl:attribute name="title">
 					<!--Edit Contact-->
 					<xsl:call-template name="term4024" />
@@ -575,7 +575,7 @@
 				<xsl:call-template name="term4022" />
 			</a>
 			<xsl:text>&#160;&#160;&#160;</xsl:text>
-			<a class="btn btn-primary" href="{$currentPage/@url}?ewCmd=delContact&amp;id={nContactKey}">
+			<a class="btn btn-primary" href="{$currentPage/@url}?memCmd=delContact&amp;id={nContactKey}">
 				<xsl:attribute name="title">
 					<!--Delete Contact-->
 					<xsl:call-template name="term4025" />
@@ -937,7 +937,7 @@
 				<xsl:otherwise>
 					<!-- View addresses -->
 					<div class="add">
-            <a class="btn btn-primary principle" href="{$currentPage/@url}?ewCmd=addContact">
+            <a class="btn btn-primary principle" href="{$currentPage/@url}?memCmd=addContact">
               <i class="fa fa-plus">
                 <xsl:text> </xsl:text>
               </i><xsl:text> </xsl:text>
@@ -965,18 +965,22 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:for-each select="$page/User[1]/Company">
-            <a class="btn btn-primary principle" href="{$currentPage/@url}?ewCmd=addContact&amp;ParentDirId={@id}">
+            <xsl:if test="Name">
+              <a class="btn btn-primary principle" href="{$currentPage/@url}?memCmd=addContact&amp;ParentDirId={@id}">
                 <i class="fa fa-plus">
                   <xsl:text> </xsl:text>
                 </i><xsl:text> </xsl:text>
                 Add New Address
               </a>
-            <h3>Addresses for <xsl:value-of select="Name/node()"/></h3>
+              <h3>
+                Addresses for <xsl:value-of select="Name/node()"/>
+              </h3>
 
-            <div class="list orders row">
-              <xsl:apply-templates select="Contacts/Contact" mode="membershipUserContactsDisplayBrief"/>
-              <div class="terminus">&#160;</div>
-            </div>
+              <div class="list orders row">
+                <xsl:apply-templates select="Contacts/Contact" mode="membershipUserContactsDisplayBrief"/>
+                <div class="terminus">&#160;</div>
+              </div>
+            </xsl:if>
           </xsl:for-each>
         </xsl:otherwise>
       </xsl:choose>
@@ -1032,7 +1036,7 @@
 				</xsl:if>
 			</p>
 			<p class="buttons">
-				<a class="btn btn-primary" href="{$currentPage/@url}?ewCmd=editContact&amp;id={nContactKey}">
+				<a class="btn btn-primary" href="{$currentPage/@url}?memCmd=editContact&amp;id={nContactKey}">
           <xsl:attribute name="title">
 						<!--Edit Contact-->
 						<xsl:call-template name="term4024" />
@@ -1046,7 +1050,7 @@
 					<xsl:call-template name="term4022" />
 				</a>
 				<xsl:text>&#160;&#160;&#160;</xsl:text>
-				<a class="btn btn-danger" href="{$currentPage/@url}?ewCmd=delContact&amp;id={nContactKey}" onclick="return confirm('Are you sure you want to delete this address?');">
+				<a class="btn btn-danger" href="{$currentPage/@url}?memCmd=delContact&amp;id={nContactKey}" onclick="return confirm('Are you sure you want to delete this address?');">
 					<xsl:attribute name="title">
 						<!--Delete Contact-->
 						<xsl:call-template name="term4025" />
