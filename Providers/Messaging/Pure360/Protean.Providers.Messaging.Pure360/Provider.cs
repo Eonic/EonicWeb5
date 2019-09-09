@@ -12,11 +12,14 @@ using static Protean.Cms;
 using Microsoft.VisualBasic;
 using Protean.Providers.Messaging.Pure360Library.paint;
 
+
+
 namespace Protean.Providers.Messaging
 {
     public class Pure360
     {
-
+        PaintMethods p = new PaintMethods();
+        
         public void Initiate(ref object _AdminXforms, ref object _AdminProcess, ref object _Activities, Protean.Providers.Messaging.BaseProvider MemProvider, ref Protean.Cms myWeb)
         {
             MemProvider.AdminXforms = new AdminXForms(myWeb);
@@ -323,56 +326,20 @@ namespace Protean.Providers.Messaging
             {
                 try
                 {
-                    // Dim _api As CampaignMonitorAPIWrapper.CampaignMonitorAPI.api = New CampaignMonitorAPI.api()
-                    //CampaignMonitorAPIWrapper.CampaignMonitorAPI.api _api = new CampaignMonitorAPIWrapper.CampaignMonitorAPI.api();
-                  
                     PaintMethods p = new PaintMethods();
                     p.login(moMailConfig["P360Username"].ToString(), moMailConfig["P360Password"].ToString());
                     
                     Hashtable searchInput = new Hashtable();
                     Hashtable resultOutput = null;
-                    string listName="New Master list";
+                    string listName= "";
                     searchInput.Add("listName", listName);
-                    resultOutput = p.searchExactMatch("bus_facade_campaign_list", searchInput);
+                    resultOutput = p.search("bus_facade_campaign_list", searchInput);
+                    Hashtable Lists = null;
+                    Lists = p.GetListName("bus_facade_campaign_list", resultOutput);
 
-                  
-                    
-                    //p.search()
-                    //object Lists;
-                    //object Segments;
-                    //createsend_dotnet.BasicList List;
-                    //createsend_dotnet.BasicSegment Segment;
-
-                    //createsend_dotnet.ApiKeyAuthenticationDetails cmAuth = new createsend_dotnet.ApiKeyAuthenticationDetails(moMailConfig["ApiKey"]);
-                    //createsend_dotnet.Client CMclient = new createsend_dotnet.Client(cmAuth, moMailConfig["ClientID"]);
-
-                    //// gets the lists for the client
-                    //Hashtable hLists = new Hashtable();
-                    //Lists = CMclient.Lists();
-                    //Segments = CMclient.Segments();
-
-                    var Lists = new[]
-                      {
-                        new { Name = "Sonali", ListID=8 },
-                        new { Name = "Monali", ListID=2 },
-                        new { Name = "Pranali", ListID=14 }
-                        };
-
-                    var Segments = new[]
-                  {
-                        new { Title = "ABC", SegmentID=8 },
-                        new { Title = "Whiskers", SegmentID=2 },
-                        new { Title = "Sasha", SegmentID=14 }
-                        };
-
-                    foreach (var List in Lists)
+                    foreach (var key in Lists.Keys)
                     {
-                        base.addOption(ref oSelElmt, List.Name,(List.ListID).ToString());
-                        foreach (var Segment in Segments )
-                        {
-                            /* if (Segment.ListID == List.ListID)*/
-                            base.addOption(ref oSelElmt, "--- " + Segment.Title, "SEGMENT" + Segment.SegmentID);
-                        }
+                        base.addOption(ref oSelElmt, Lists[key].ToString(), key.ToString());
                     }
 
                     return oSelElmt;
@@ -1619,7 +1586,10 @@ namespace Protean.Providers.Messaging
 
                     // do nothing this is a placeholder
                     // We have an Xform within this content we need to process.
-                    string apiKey = moMailConfig["ApiKey"];
+                    // string apiKey = moMailConfig["ApiKey"];
+                    PaintMethods p = new PaintMethods();
+                    p.login(moMailConfig["P360Username"].ToString(), moMailConfig["P360Password"].ToString());
+
                     createsend_dotnet.ApiKeyAuthenticationDetails cmAuth = new createsend_dotnet.ApiKeyAuthenticationDetails(moMailConfig["ApiKey"]);
                     createsend_dotnet.Subscriber subscriber = new createsend_dotnet.Subscriber(cmAuth, ListId);
                     List<createsend_dotnet.SubscriberCustomField> customFields = new List<createsend_dotnet.SubscriberCustomField>();
