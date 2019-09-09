@@ -634,5 +634,172 @@ public class PaintMethods : PaintSession
         
         return decodedString;
     }
-}
+
+        //public string syncAllApplicants(ref List<FCVAPI.Models.Applicant> oApplicants, String ListName, String addType = "store")
+        //{
+        //    PaintMethods paint = null;
+
+        //    try
+        //    {
+        //        DataTable applicants = new DataTable();
+
+        //        applicants.Columns.Add("Email");
+        //        applicants.Columns.Add("Registration_Datetime", typeof(DateTime));
+        //        applicants.Columns.Add("Mobile");
+        //        applicants.Columns.Add("ID");
+        //        applicants.Columns.Add("First_Name");
+        //        applicants.Columns.Add("Last_Name");
+        //        applicants.Columns.Add("Salary");
+        //        applicants.Columns.Add("Sector");
+        //        applicants.Columns.Add("Partner");
+        //        applicants.Columns.Add("PartnerID");
+        //        applicants.Columns.Add("Last_Registration_Datetime", typeof(DateTime));
+        //        applicants.Columns.Add("Registration_Count");
+        //        applicants.Columns.Add("Country");
+        //        applicants.Columns.Add("Postcode");
+        //        applicants.Columns.Add("Job_Title");
+        //        applicants.Columns.Add("Step");
+        //        applicants.Columns.Add("Step_Change_Date", typeof(DateTime));
+        //        applicants.Columns.Add("Email_Review_Purchased");
+        //        applicants.Columns.Add("Training_Advice_Requested");
+        //        applicants.Columns.Add("Interview_Coaching_Requested");
+        //        applicants.Columns.Add("LinkedIn_Requested");
+        //        applicants.Columns.Add("Pro_CV");
+        //        applicants.Columns.Add("Job_Hunting");
+        //        applicants.Columns.Add("Tags");
+        //        applicants.Columns.Add("Purchased_Product_Ids");
+
+        //        //All info above to be pulled from system.
+        //        //Fields below will come from 'tick' page as I want to ask further questions to get more data.
+
+        //        applicants.Columns.Add("Highest_Qualification_Level");
+        //        applicants.Columns.Add("Desired_Job_Title");
+        //        applicants.Columns.Add("Currently_Studying");
+        //        applicants.Columns.Add("Requested_Training_Information");
+        //        applicants.Columns.Add("Employed");
+        //        applicants.Columns.Add("Training_Start_Date");
+        //        applicants.Columns.Add("Course_1");
+        //        applicants.Columns.Add("Course_2");
+        //        applicants.Columns.Add("Course_3");
+        //        applicants.Columns.Add("Course_4");
+        //        applicants.Columns.Add("Course_5");
+        //        applicants.Columns.Add("Newsletter");
+        //        // Spare Fields To be Labelled
+        //        applicants.Columns.Add("Spare_1");
+        //        applicants.Columns.Add("Spare_2");
+        //        applicants.Columns.Add("Spare_3");
+
+
+        //        foreach (FCVAPI.Models.Applicant applicant in oApplicants)
+        //        {
+        //            if (applicant.Email != "")
+        //            {
+
+        //                DataRow MyRow = applicants.NewRow();
+        //                MyRow["ID"] = applicant.id;
+        //                MyRow["First_Name"] = applicant.FirstName;
+        //                MyRow["Last_Name"] = applicant.LastName;
+        //                MyRow["Email"] = applicant.Email;
+        //                MyRow["Mobile"] = applicant.Telephone;
+        //                MyRow["Salary"] = applicant.SalaryRange;
+        //                MyRow["Sector"] = applicant.Industry;
+        //                MyRow["Partner"] = applicant.PartnerName == "No Partner" ? "thefullercv.com" : applicant.PartnerName;
+        //                MyRow["PartnerID"] = applicant.PartnerId;
+        //                MyRow["Registration_Datetime"] = applicant.RegisteredDate;
+        //                MyRow["Last_Registration_Datetime"] = applicant.LastRegisteredDate;
+        //                //  MyRow["Registration_Count"] = applicant.id; Count for Notes containing "Client Updated Details by %"
+        //                MyRow["Country"] = applicant.Country == "" ? "Unknown" : applicant.Country;
+        //                // Add Post county
+        //                MyRow["Postcode"] = applicant.Postcode;
+        //                MyRow["Job_Title"] = applicant.JobTitle;
+        //                MyRow["Step"] = applicant.Step;
+        //                MyRow["Step_Change_Date"] = applicant.StepChangeDate;
+        //                MyRow["Tags"] = applicant.Tags;
+        //                MyRow["Purchased_Product_Ids"] = applicant.PurchasedProductIDs;
+
+        //                //   MyRow["Email_Review_Purchased"] = applicant.id; Count for Notes containing "Email Review Done by %" / Product Purchased ID 68
+
+
+        //                //   MyRow["Training_Advice_Requested"] = applicant.id; (registration tags - CP)
+        //                //   MyRow["Interview_Coaching_Requested"] = applicant.id; (registration tags - IC)
+        //                //   MyRow["LinkedIn_Requested"] = applicant.id; (registration tags - LPR)
+        //                //   MyRow["Pro_CV"] = applicant.id; (registration tags - ProCV)
+        //                //   MyRow["Job_Hunting"] = applicant.id; (registration tags - JOB)
+
+        //                //All info above to be pulled from system.
+        //                //Fields below will come from 'tick' page as I want to ask further questions to get more data.
+
+        //                //   MyRow["Highest_Qualification_Level"] = applicant.id;
+        //                //   MyRow["Desired_Job_Title"] = applicant.id;
+        //                //   MyRow["Currently_Studying"] = applicant.id; Y/N
+        //                //    MyRow["Requested_Training_Information"] = applicant.id; 
+        //                //    MyRow["Employed"] = applicant.id;
+        //                //    MyRow["Training_Start_Date"] = applicant.id; /On Page 2
+        //                //    MyRow["Course_1"] = applicant.id; / Training Provider leads
+        //                //    MyRow["Course_2"] = applicant.id;
+        //                //    MyRow["Course_3"] = applicant.id;
+        //                //    MyRow["Course_4"] = applicant.id;
+        //                //    MyRow["Course_5"] = applicant.id;
+        //                //    MyRow["Newsletter"] = applicant.id;
+        //                // Spare Fields To be Labelled
+        //                //     MyRow["Spare_1"] = applicant.id;
+        //                //     MyRow["Spare_2"] = applicant.id;
+        //                //     MyRow["Spare_3"] = applicant.id;
+
+        //                foreach (Models.Quote lQuote in applicant.ApplicantQuotes.Quotes)
+        //                {
+        //                    if (lQuote.Product == "Review")
+        //                    {
+        //                        //MyRow["Last_Quote_Consultant"] = lQuote.ConsultantName;
+        //                        //MyRow["Last_Quote_Amount"] = lQuote.Amount;
+        //                        //MyRow["Last_Quote_Date"] = lQuote.Date;
+
+        //                        MyRow["Spare_1"] = lQuote.ConsultantName;
+        //                        MyRow["Spare_2"] = lQuote.Amount;
+        //                        MyRow["Spare_3"] = lQuote.Date;
+        //                    }
+        //                    else
+        //                    {
+        //                        //MyRow["Last_SP_Quote_Consultant"] = lQuote.ConsultantName;
+        //                        //MyRow["Last_SP_Quote_Amount"] = lQuote.Amount;
+        //                        //MyRow["Last_SP_Quote_Date"] = lQuote.Date;
+
+        //                        MyRow["Course_1"] = lQuote.ConsultantName;
+        //                        MyRow["Course_2"] = lQuote.Amount;
+        //                        MyRow["Course_3"] = lQuote.Date;
+        //                    }
+        //                }
+
+        //                applicants.Rows.Add(MyRow);
+        //            }
+        //        }
+
+        //        paint = new PaintMethods();
+        //        paint.login(goConfig["p360user"], goConfig["p360pass"]);
+        //        Hashtable resultOutput = null;
+
+        //        resultOutput = paint.addList(ListName, applicants, null, addType);
+        //        SaveToFile(resultOutput, goServer.MapPath("/logs/p360LastSync.xml"));
+
+        //        if (resultOutput.ContainsKey("Error"))
+        //        {
+        //            return "Undetermined Error - " + (string)resultOutput["ListData"];
+
+        //        }
+        //        else
+        //        {
+        //            return "synced " + oApplicants.Count();
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (OnError != null)
+        //        {
+        //            OnError(this, new Protean.Tools.Errors.ErrorEventArgs(mcModuleName, "SaveApplicant", ex, ""));
+        //        }
+        //        return ex.Message + ex.StackTrace;
+        //    }
+        //}
+    }
 }

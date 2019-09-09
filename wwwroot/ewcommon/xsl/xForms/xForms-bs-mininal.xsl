@@ -598,9 +598,9 @@
   <!-- ========================== GENERAL : CONTROL LEGEND ========================== -->
   <!-- -->
   <xsl:template match="input[not(contains(@class,'hidden'))] | secret | select | select1 | range | textarea | upload " mode="xform_legend">
-    <xsl:if test="alert">
+    <!--xsl:if test="alert">
       <xsl:apply-templates select="alert" mode="inlineAlert"/>
-    </xsl:if>
+    </xsl:if-->
     <xsl:if test="hint[@class!='inline']">
       <span class="hint">
         <xsl:copy-of select="hint/node()"/>
@@ -837,11 +837,19 @@
           <xsl:value-of select="@data-pleasewaitdetail"/>
         </xsl:attribute>
       </xsl:if>
-      <i class="fa {$icon} fa-white">
+      <xsl:if test="@icon-placement!='right'">
+        <i class="fa {$icon} fa-white">
+          <xsl:text> </xsl:text>
+        </i>
         <xsl:text> </xsl:text>
-      </i>
-      <xsl:text> </xsl:text>
+      </xsl:if>
       <xsl:apply-templates select="label" mode="submitText"/>
+      <xsl:if test="@icon-placement='right'">
+        <xsl:text> </xsl:text>
+        <i class="fa {$icon} fa-white">
+          <xsl:text> </xsl:text>
+        </i>
+      </xsl:if>
     </button>
   </xsl:template>
 
@@ -2785,9 +2793,10 @@
         <xsl:copy-of select="help/node()"/>
       </span>
     </xsl:if>
-    <xsl:if test="alert">
+    <!--This has moved to popover features-->
+    <!--xsl:if test="alert">
       <xsl:apply-templates select="alert" mode="inlineAlert"/>
-    </xsl:if>
+    </xsl:if-->
   </xsl:template>
 
   <xsl:template match="input[not(contains(@class,'hidden'))]" mode="xform_legend">
@@ -2805,10 +2814,10 @@
     <xsl:variable name="ref2">
       <xsl:value-of select="translate($ref,'/','-')"/>
     </xsl:variable>
-    <div class="popover-{$ref2} popoverContent" role="tooltip">
+    <div id="popover-{$ref2}" class="popover-{$ref2} popoverContent" role="tooltip">
       <xsl:copy-of select="help/node()"/>
     </div>
-    <button type="button" class="btn btn-info" data-contentwrapper=".popover-{$ref2}" data-toggle="popover" data-container="body" data-placement="left" rel="frmPopover" data-original-title="{label/node()}" title="{label/node()}">
+    <button type="button" class="btn btn-info" data-contentwrapper="#popover-{$ref2}" data-toggle="popover" data-container="body" data-placement="left" rel="frmPopover" data-original-title="{label/node()}" title="{label/node()}">
       <i class="fa fa-info">
         <xsl:text> </xsl:text>
       </i>
@@ -2822,10 +2831,7 @@
     <xsl:variable name="ref2">
       <xsl:value-of select="translate($ref,'/','-')"/>
     </xsl:variable>
-    <div class="popover-{$ref2} popoverContent" role="tooltip">
-      <xsl:copy-of select="alert/node()"/>
-    </div>
-    <button type="button" class="btn btn-danger" id="popover-{$ref2}-btn" data-contentwrapper=".popover-{$ref2}" data-toggle="popover" data-container="body" data-placement="left" rel="frmPopover" data-original-title="{label/node()}" title="{label/node()}">
+    <button type="button" class="btn btn-danger" id="popover-{$ref2}-btn" data-content="{alert/node()}" data-contentwrapper="#popover-{$ref2}" data-toggle="popover" data-container="body" data-placement="left" rel="frmPopover"  title="{label/node()}">
       <i class="fa fa-exclamation-triangle">
         <xsl:text> </xsl:text>
       </i>

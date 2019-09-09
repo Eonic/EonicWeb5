@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Protean.Providers.Messaging.Pure360.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Protean.Providers.Messaging.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="Protean_Providers_Messaging_Pure360_com_pure360_paint_paintService" Type="(Web Service URL)" Scope="Application">

@@ -355,7 +355,7 @@ Public Class Messaging
                 Dim mailSender As New MailAddress(serverSenderEmail, serverSenderEmailName)
 
 
-                If goConfig("overrideFromEmail") = "on" Then
+                If LCase(goConfig("overrideFromEmail")) = "on" Then
                     oMailn.From = mailSender
                 Else
                     ' Don't add the sender if it's the same address as the from
@@ -1323,15 +1323,15 @@ Public Class Messaging
         Try
             'dictionary object
             Dim oDic As New UserEmailDictionary
-            Dim oDBH As New Cms.dbHelper("Data Source=" & goConfig("DatabaseServer") & "; " & _
-            "Initial Catalog=" & goConfig("DatabaseName") & "; " & _
+            Dim oDBH As New Cms.dbHelper("Data Source=" & goConfig("DatabaseServer") & "; " &
+            "Initial Catalog=" & goConfig("DatabaseName") & "; " &
             goConfig("DatabaseAuth"), 1)
-            Dim cSQL As String = "SELECT nDirKey, cDirXml" & _
-            " FROM tblDirectory" & _
-            " WHERE (((SELECT TOP 1 tblDirectoryRelation.nDirChildId" & _
-            " FROM tblDirectoryRelation INNER JOIN" & _
-            " tblDirectory Groups ON tblDirectoryRelation.nDirParentId = Groups.nDirKey" & _
-            " WHERE (Groups.nDirKey IN (" & groupIds & ")) AND (tblDirectoryRelation.nDirChildId = tblDirectory.nDirKey)" & _
+            Dim cSQL As String = "SELECT nDirKey, cDirXml" &
+            " FROM tblDirectory" &
+            " WHERE (((SELECT TOP 1 tblDirectoryRelation.nDirChildId" &
+            " FROM tblDirectoryRelation INNER JOIN" &
+            " tblDirectory Groups ON tblDirectoryRelation.nDirParentId = Groups.nDirKey" &
+            " WHERE (Groups.nDirKey IN (" & groupIds & ")) AND (tblDirectoryRelation.nDirChildId = tblDirectory.nDirKey)" &
             " GROUP BY tblDirectoryRelation.nDirChildId)) IS NOT NULL)"
 
             Dim oDS As DataSet = oDBH.GetDataSet(cSQL, "Users", "Addresses")
