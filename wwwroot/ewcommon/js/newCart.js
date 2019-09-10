@@ -161,6 +161,10 @@ function addDeliveryAddress() {
     blankoutFormFields($('#cDelContactTel'), $('#cContactTel').val());
     blankoutFormFields($('#cDelContactFax'), $('#cContactFax').val());
 
+    blankoutFormFields($('#cDelContactHouseNo'), $('#cContactHouseNo').val());
+    blankoutFormFields($('#deliverycDelContactZip'), $('#billingcContactZip').val());
+
+
     var foo = [];
     $('#cDelContactCountry option:selected').each(function (i, selected) {
         foo[i] = $(selected).text();
