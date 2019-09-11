@@ -1366,7 +1366,7 @@ Public Class Cms
             BuildPageXML()
 
             Dim layoutCmd As String = ""
-            If Not moSession Is Nothing Then
+            If Not moSession Is Nothing And Not ibIndexMode Then
                 If (mnUserId <> "0" Or LCase(moConfig("LogAll")) = "On") And mbAdminMode = False And Features.ContainsKey("ActivityReporting") Then
                     If moRequest("noFrames") <> "True" Then ' Fix for frameset double counting                   
                         'moDbHelper.logActivity(dbHelper.ActivityType.PageAccess, mnUserId, mnPageId, mnArtId)
@@ -4201,7 +4201,7 @@ Public Class Cms
                 root = moPageXml.CreateElement("Settings")
 
                 'Please never add any setting here you do not want to be publicly accessible.
-                Dim s = "web.DescriptiveContentURLs;web.BaseUrl;web.SiteName;web.GoogleAnalyticsUniversalID;web.GoogleTagManagerID;web.ScriptAtBottom;web.debug;cart.SiteURL;web.ImageRootPath;web.DocRootPath;web.MediaRootPath;web.menuNoReload;web.RootPageId;web.MenuTreeDepth;"
+                Dim s = "web.DescriptiveContentURLs;web.BaseUrl;web.SiteName;web.GoogleAnalyticsUniversalID;web.GoogleTagManagerID;web.GoogleAPIKey;web.ScriptAtBottom;web.debug;cart.SiteURL;web.ImageRootPath;web.DocRootPath;web.MediaRootPath;web.menuNoReload;web.RootPageId;web.MenuTreeDepth;"
                 s = s + "web.eonicwebProductName;web.eonicwebCMSName;web.eonicwebAdminSystemName;web.eonicwebCopyright;web.eonicwebSupportTelephone;web.eonicwebWebsite;web.eonicwebSupportEmail;web.eonicwebLogo;web.websitecreditURL;web.websitecreditText;web.websitecreditLogo;"
                 s = s + "theme.BespokeBoxStyles;theme.BespokeBackgrounds;theme.BespokeTextClasses;"
                 s = s + moConfig("XmlSettings") & ";"
@@ -5192,19 +5192,25 @@ Public Class Cms
                             If Not goLangConfig Is Nothing Then
                                 'Check Language by Domain
                                 Dim oLangElmt As XmlElement
+                                Dim httpStart As String
+                                If moRequest.ServerVariables("SERVER_PORT_SECURE") = "1" Then
+                                    httpStart = "https://"
+                                Else
+                                    httpStart = "http://"
+                                End If
 
                                 If Not goLangConfig.SelectSingleNode("Language[@code='" & pageLang & "']") Is Nothing Then
                                     For Each oLangElmt In goLangConfig.SelectNodes("Language[@code='" & pageLang & "']")
                                         Select Case LCase(oLangElmt.GetAttribute("identMethod"))
                                             Case "domain"
-                                                pvUrlPrefix = "http://" & oLangElmt.GetAttribute("identifier")
+                                                pvUrlPrefix = httpStart & oLangElmt.GetAttribute("identifier")
                                             Case "path"
-                                                pvUrlPrefix = "http://" & goLangConfig.GetAttribute("defaultDomain") & "/" & oLangElmt.GetAttribute("identifier")
+                                                pvUrlPrefix = httpStart & goLangConfig.GetAttribute("defaultDomain") & "/" & oLangElmt.GetAttribute("identifier")
                                         End Select
                                     Next
                                 End If
 
-                                If pvUrlPrefix = "" Then pvUrlPrefix = "http://" & goLangConfig.GetAttribute("defaultDomain")
+                                If pvUrlPrefix = "" Then pvUrlPrefix = httpStart & goLangConfig.GetAttribute("defaultDomain")
                                 pvElmt.SetAttribute("url", pvUrlPrefix & sUrl)
 
                             End If

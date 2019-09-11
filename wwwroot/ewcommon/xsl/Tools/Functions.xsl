@@ -69,7 +69,7 @@
   <xsl:variable name="navwidth" select="'200'"/>
   <xsl:variable name="boxpad" select="'15'"/>
   <xsl:variable name="colpad" select="'20'"/>
-
+  <xsl:variable name="jqueryVer" select="'1.11'"/>
   <!-- Dates -->
   <xsl:variable name="today" select="/Page/Request/ServerVariables/Item[@name='Date']/node()"/>
   <xsl:variable name="currentYear" select="substring($today,1,4)"/>
@@ -201,6 +201,13 @@
     <xsl:call-template name="getXmlSettings">
       <xsl:with-param name="sectionName" select="'web'"/>
       <xsl:with-param name="valueName" select="'GoogleAnalyticsUniversalID'"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:variable name="GoogleAPIKey">
+    <xsl:call-template name="getXmlSettings">
+      <xsl:with-param name="sectionName" select="'web'"/>
+      <xsl:with-param name="valueName" select="'GoogleAPIKey'"/>
     </xsl:call-template>
   </xsl:variable>
 
@@ -343,7 +350,8 @@
           </xsl:otherwise>
         </xsl:choose>
 
-        <xsl:if test="$ScriptAtBottom!='on'">
+
+        <xsl:if test="$ScriptAtBottom!='on' or $adminMode">
           <xsl:apply-templates select="." mode="js"/>
         </xsl:if>
         
@@ -595,8 +603,16 @@
   </xsl:template>
 
   <xsl:template match="Page" mode="commonJsFiles">
-    <xsl:text>~/ewcommon/js/jquery/jquery-1.11.1.min.js,</xsl:text>
-    <xsl:text>~/ewcommon/js/jquery/jquery-migrate-1.2.1.min.js,</xsl:text>
+    <xsl:choose>
+      <xsl:when test="$jqueryVer='3.4'">
+        <xsl:text>~/ewcommon/js/jquery/jquery-3.4.1.min.js,</xsl:text>
+        <xsl:text>~/ewcommon/js/jquery/jquery-migrate-3.0.1.min.js,</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>~/ewcommon/js/jquery/jquery-1.11.1.min.js,</xsl:text>
+        <xsl:text>~/ewcommon/js/jquery/jquery-migrate-1.2.1.min.js,</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>~/ewcommon/js/jquery/ui/1.11.1/jquery-ui.min.js,</xsl:text>
     <xsl:text>~/ewcommon/bs3/js/bootstrap.js,</xsl:text>
     <xsl:text>~/ewcommon/js/jquery/colorpickersliders/tinycolor.js,</xsl:text>
@@ -1008,15 +1024,18 @@
         <xsl:when test="ContentDetail/Content">
           <xsl:apply-templates select="ContentDetail/Content" mode="JSONLD"/>
         </xsl:when>
+        <xsl:when test="Contents/Content[@type='Module' and @moduleType='FAQList']">
+          <xsl:apply-templates select="Contents/Content[@type='Module' and @moduleType='FAQList']" mode="JSONLD"/>
+        </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates select="Contents/Content" mode="JSONLD"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:if test ="$jsonld!=''">
-        <script type="application/ld+json">
-          <xsl:value-of select="$jsonld"/>
-        </script>
+      <script type="application/ld+json">
+        <xsl:value-of select="$jsonld"/>
+      </script>
     </xsl:if>
   </xsl:template>
 
@@ -6956,6 +6975,16 @@
       <xsl:when test="$sort='figure'">
         <xsl:for-each select="/Page/Contents/Content[@type=$contentType]">
           <xsl:sort select="Salary/@figure" order="{$order}" data-type="number"/>
+          <xsl:if test="$stepCount = '0' or ($stepCount &gt; 0 and position() &gt; $startPos and position() &lt;= $endPos)">
+            <xsl:if test="$maxDisplay = '0' or ($maxDisplay &gt; 0 and position() &lt;= $maxDisplay)">
+              <xsl:copy-of select="."/>
+            </xsl:if>
+          </xsl:if>
+        </xsl:for-each>
+      </xsl:when>
+      <xsl:when test="$sort='StartDate/@sortDate'">
+        <xsl:for-each select="/Page/Contents/Content[@type=$contentType]">
+          <xsl:sort select="StartDate/@sortDate" order="{$order}" data-type="text"/>
           <xsl:if test="$stepCount = '0' or ($stepCount &gt; 0 and position() &gt; $startPos and position() &lt;= $endPos)">
             <xsl:if test="$maxDisplay = '0' or ($maxDisplay &gt; 0 and position() &lt;= $maxDisplay)">
               <xsl:copy-of select="."/>
