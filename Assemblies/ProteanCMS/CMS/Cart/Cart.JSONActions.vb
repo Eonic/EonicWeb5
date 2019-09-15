@@ -110,10 +110,18 @@ Partial Public Class Cms
 
                         For Each item In jObj("Item")
                             Dim bUnique As Boolean = False
+                            Dim cPrice As Double = 0
+                            Dim productName As String = ""
                             If item.ContainsKey("UniqueProduct") Then
                                 bUnique = item("UniqueProduct")
                             End If
-                            myCart.AddItem(item("contentId"), item("qty"), Nothing, "", 0, "", bUnique)
+                            If item.ContainsKey("itemPrice") Then
+                                cPrice = item("itemPrice")
+                            End If
+                            If item.ContainsKey("productName") Then
+                                productName = item("productName")
+                            End If
+                            myCart.AddItem(item("contentId"), item("qty"), Nothing, productName, cPrice, "", bUnique)
                         Next
                     End If
                     'Output the new cart

@@ -5936,7 +5936,9 @@ processFlow:
                             If cProductText = "" Then
                                 cProductText = oProdXml.SelectSingleNode("/Content/*[1]").InnerText
                             End If
-                            oPrice = getContentPricesNode(oProdXml.DocumentElement, myWeb.moRequest("unit"), nQuantity)
+                            If nPrice = 0 Then
+                                oPrice = getContentPricesNode(oProdXml.DocumentElement, myWeb.moRequest("unit"), nQuantity)
+                            End If
                             If Not oProdXml.SelectSingleNode("/Content[@overridePrice='True']") Is Nothing Then
                                 mbOveridePrice = True
                             End If
@@ -5950,15 +5952,7 @@ processFlow:
                             If Not oProdXml.SelectSingleNode("/Content/ShippingWeight") Is Nothing Then
                                 nWeight = CDbl("0" & oProdXml.SelectSingleNode("/Content/ShippingWeight").InnerText)
                             End If
-                            If (UniqueProduct) Then
 
-                                If oProdXml.SelectSingleNode("/Content/GiftMessage") Is Nothing Then
-                                    giftMessageNode = oProdXml.CreateNode(Xml.XmlNodeType.Element, "GiftMessage", "")
-                                    oProdXml.DocumentElement.AppendChild(giftMessageNode)
-                                Else
-                                    ' sGiftMessage = oProdXml.SelectSingleNode("/Content/GiftMessage").InnerText
-                                End If
-                            End If
                             'Add Parent Product to cart if SKU.
                             If moDBHelper.ExeProcessSqlScalar("Select cContentSchemaName FROM tblContent WHERE nContentKey = " & nProductId) = "SKU" Then
                                     'Then we need to add the Xml for the ParentProduct.
@@ -5988,6 +5982,7 @@ processFlow:
                         nTaxRate = getProductTaxRate(oPrice)
                     Else
                         strPrice1 = CStr(nPrice)
+
                     End If
 
                     If mbOveridePrice Then
@@ -6127,6 +6122,7 @@ processFlow:
             Dim nQuantity As Long
             Dim nI As Integer
             Dim cReplacementName As String = ""
+            Dim nVariablePrice As Long = 0
             'test string
             'qty_233=1 opt_233_1=1_2,1_3 opt_233_2=1_5
             Dim cSql As String
@@ -6183,7 +6179,7 @@ processFlow:
                                         End If
                                     Next 'end option loop
                                     'Add Item
-                                    AddItem(nProductKey, nQuantity, oOptions, cReplacementName)
+                                    AddItem(nProductKey, nQuantity, oOptions, cReplacementName, nVariablePrice)
                                     'Add Item to "Done" List
                                     strAddedProducts &= "'" & nProductKey & "',"
                                 End If
