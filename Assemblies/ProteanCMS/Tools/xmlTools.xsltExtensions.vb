@@ -19,7 +19,8 @@ Imports BundleTransformer.Core.Transformers
 
 Imports System.Linq
 Imports System.Collections.Generic
-
+Imports Imazen.WebP
+Imports System.Drawing
 
 Partial Public Module xmlTools
 
@@ -1162,11 +1163,22 @@ Partial Public Module xmlTools
                                     oImage.SetMaxSize(maxWidth, maxHeight)
 
                                     oImage.Save(goServer.MapPath(newFilepath), nCompression, cCheckServerPath)
-
-                                    'create a WEBP version of the image.
-
                                     oImage.Close()
                                     oImage = Nothing
+
+                                    'generate webp image
+                                    Try
+                                        Dim webpFileName As String = Replace(cVirtualPath2, "." & filetype, sSuffix & ".webp")
+                                        Using bitMap As New Bitmap(goServer.MapPath(newFilepath))
+                                            Using saveImageStream As FileStream = System.IO.File.Open(goServer.MapPath(webpFileName), FileMode.Create)
+                                                Dim encoder As New SimpleEncoder
+                                                encoder.Encode(bitMap, saveImageStream, 20)
+                                            End Using
+                                        End Using
+                                        Return webpFileName
+                                    Catch ex As Exception
+                                        reportException("xmlTools.xsltExtensions", "ResizeImage2", ex, , cProcessInfo)
+                                    End Try
 
                             End Select
 
