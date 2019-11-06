@@ -1946,8 +1946,6 @@ Partial Public Module xmlTools
 
         End Function
 
-
-
         Public Function BundleCSS(ByVal CommaSeparatedFilenames As String, ByVal TargetFile As String) As Object
             If Split(CommaSeparatedFilenames, ",").Count > 1 Then
                 Throw New NotSupportedException("BundleCSS: this function does not currently support multiple less files")
@@ -2051,6 +2049,18 @@ Partial Public Module xmlTools
                 myWeb.bPageCache = False
                 Return sReturnError
             End Try
+
+        End Function
+
+        Function GetWebPImagePath(ByVal inputPath As String, ByVal extension As String) As String
+
+            Dim webPImagePath As String = Path.ChangeExtension(inputPath, extension)
+
+            If VirtualFileExists(webPImagePath) > 0 Then
+                Return webPImagePath
+            End If
+
+            Return String.Empty
 
         End Function
 

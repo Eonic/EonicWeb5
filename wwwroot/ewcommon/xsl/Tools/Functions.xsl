@@ -6192,9 +6192,17 @@
         <xsl:variable name="imageSize-xs" select="ew:ImageSize($newSrc-xs)"/>
         <xsl:variable name="imageSize-sm" select="ew:ImageSize($newSrc-sm)"/>
         <xsl:variable name="imageSize-md" select="ew:ImageSize($newSrc-md)"/>
-        
+
+        <xsl:variable name="webpImagePath" select="ew:GetWebPImagePath($newSrc, '.webp')"/>
         <xsl:variable name="image">
           <picture>
+            <!--<xsl:if test="$webpImagePath != ''">
+              <source type="image/webp">
+                <xsl:attribute name="srcset">
+                  <xsl:value-of select="$webpImagePath"/>
+                </xsl:attribute>
+              </source>
+            </xsl:if>-->
             <img itemprop="image">
               <!-- SRC -->
               <xsl:choose>
