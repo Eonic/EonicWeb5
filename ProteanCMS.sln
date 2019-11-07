@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protean.Tools.UnitTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProteanCMS.IntegrationTests", "Assemblies\ProteanCMS.IntegrationTests\ProteanCMS.IntegrationTests.csproj", "{58CA7ED9-D49F-42DC-83EA-04A4A5BCBB28}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{FBA4F935-B368-4677-B43F-0E74FB6BE3E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{38E4392F-2E38-450D-9F3C-AC12F11EBFF7} = {FBA4F935-B368-4677-B43F-0E74FB6BE3E5}
+		{67F47060-427B-4D03-9607-0829CD6B8408} = {FBA4F935-B368-4677-B43F-0E74FB6BE3E5}
+		{58CA7ED9-D49F-42DC-83EA-04A4A5BCBB28} = {FBA4F935-B368-4677-B43F-0E74FB6BE3E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0C8173F-275C-48D3-890B-9F45BD90DAA1}
