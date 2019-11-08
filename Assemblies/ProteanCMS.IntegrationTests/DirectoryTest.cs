@@ -55,10 +55,8 @@ namespace ProteanCMS.IntegrationTests
         }
 
         [TestMethod]
-        public void CreateUser_When_UserName_Empty_Should_Throw_Error()
+        public void CreateCompany_When_CompanyName_Empty_Should_Throw_Error()
         {
-            //Arrange
-            //here we need to get the instance from the Xform for the website and populate the default values.
             Protean.Cms.xForm oXfrm = (Protean.Cms.xForm)myWeb.getXform();
             oXfrm.load("/xforms/Directory/User.xml");
             XmlDocument oUserInstance = oXfrm.Instance.OwnerDocument;
@@ -72,8 +70,10 @@ namespace ProteanCMS.IntegrationTests
         }
 
         [TestMethod]
-        public void CreateCompany_When_CompanyName_Empty_Should_Throw_Error()
+        public void CreateUser_When_UserName_Empty_Should_Throw_Error()
         {
+            //Arrange
+            //here we need to get the instance from the Xform for the website and populate the default values.
             Protean.Cms.xForm oXfrm = (Protean.Cms.xForm)myWeb.getXform();
             oXfrm.load("/xforms/Directory/User.xml");
             XmlDocument oUserInstance = oXfrm.Instance.OwnerDocument;
