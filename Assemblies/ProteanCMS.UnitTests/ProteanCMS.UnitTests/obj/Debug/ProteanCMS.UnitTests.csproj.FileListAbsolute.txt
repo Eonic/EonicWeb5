@@ -85,6 +85,7 @@ D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\Pr
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\ProteanCMS.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\ICSharpCode.SharpZipLib.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\TidyHTML5Managed.dll
+D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\WebDriver.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\Newtonsoft.Json.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\JsonWebTokens.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\Magick.NET-Q8-AnyCPU.dll
@@ -117,6 +118,7 @@ D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\Pr
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\ICSharpCode.SharpZipLib.pdb
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\ICSharpCode.SharpZipLib.xml
+D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\WebDriver.xml
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\Magick.NET-Q8-AnyCPU.xml
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\Lucene.Net.pdb
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\ProteanCMS.UnitTests\ProteanCMS.UnitTests\bin\Debug\Lucene.Net.xml

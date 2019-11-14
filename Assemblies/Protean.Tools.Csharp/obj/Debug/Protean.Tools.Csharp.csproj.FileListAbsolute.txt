@@ -39,9 +39,12 @@ D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\bi
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\bin\Debug\ICSharpCode.SharpZipLib.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\bin\Debug\JsonWebTokens.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\bin\Debug\TidyHTML5Managed.dll
+D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\bin\Debug\WebDriver.dll
+D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\bin\Debug\WebDriver.Support.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\bin\Debug\ICSharpCode.SharpZipLib.pdb
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\bin\Debug\ICSharpCode.SharpZipLib.xml
+D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\bin\Debug\WebDriver.xml
+D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\bin\Debug\WebDriver.Support.xml
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\obj\Debug\Protean.Tools.Csharp.csproj.CopyComplete
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\obj\Debug\Protean.Tools.Csharp.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\obj\Debug\Protean.Tools.Csharp.pdb
-D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools.Csharp\obj\Debug\Protean.Tools.Csharp.csprojAssemblyReference.cache

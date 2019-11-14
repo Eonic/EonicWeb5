@@ -189,6 +189,7 @@ D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\System.Diagnostics.DiagnosticSource.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\System.IO.Packaging.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\TidyHTML5Managed.dll
+D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\WebDriver.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\JsonWebTokens.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\Microsoft.SqlServer.SqlClrProvider.dll
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\Microsoft.SqlServer.Dmf.Common.dll
@@ -204,6 +205,7 @@ D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\Microsoft.Owin.xml
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\Microsoft.Owin.Security.xml
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\bin\Debug\WebDriver.xml
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\obj\Debug\Protean.Tools.vbprojAssemblyReference.cache
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\obj\Debug\Protean.Tools.vbproj.CopyComplete
 D:\bhimraj_workspace\Projects\Repos\DevOpsGit\Assemblies\Protean.Tools\obj\Debug\Protean.Tools.dll
