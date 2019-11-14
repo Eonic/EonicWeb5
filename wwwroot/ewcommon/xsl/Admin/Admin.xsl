@@ -4155,7 +4155,22 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="Page[@layout='ImageLib' or @layout='DocsLib' or @layout='MediaLib']" mode="LayoutAdminJs">
+  <xsl:template match="Page[@ewCmd='EditContent' or @ewCmd='AddContent']" mode="LayoutAdminJs">
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js">/* */</script>
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js">/* */</script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="/ewcommon/js/jQuery/fileUploader/9.9.3/js/jquery.iframe-transport.js">/* */</script>
+    <!-- The basic File Upload plugin -->
+    <script src="/ewcommon/js/jQuery/fileUploader/9.9.3/js/jquery.fileupload.js">/* */</script>
+    <!-- The File Upload processing plugin -->
+    <script src="/ewcommon/js/jQuery/fileUploader/9.9.3/js/jquery.fileupload-process.js">/* */</script>
+    <!-- The File Upload image preview & resize plugin -->
+    <script src="/ewcommon/js/jQuery/fileUploader/9.9.3/js/jquery.fileupload-image.js">/* */</script>
+  </xsl:template>
+
+    <xsl:template match="Page[@layout='ImageLib' or @layout='DocsLib' or @layout='MediaLib']" mode="LayoutAdminJs">
 
     <xsl:variable name="MaxUploadWidth">
       <xsl:apply-templates select="." mode="MaxUploadWidth"/>
@@ -4211,8 +4226,8 @@
     <xsl:variable name="submitPath">
       <xsl:apply-templates select="." mode="SubmitPath"/>
     </xsl:variable>
-    
 
+    <xsl:if test="not(contains(/Page/Request/QueryString/Item[@name='contentType'],'popup'))">
       <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
       <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js">/* */</script>
       <!-- The Canvas to Blob plugin is included for image resizing functionality -->
@@ -4225,7 +4240,7 @@
       <script src="/ewcommon/js/jQuery/fileUploader/9.9.3/js/jquery.fileupload-process.js">/* */</script>
       <!-- The File Upload image preview & resize plugin -->
       <script src="/ewcommon/js/jQuery/fileUploader/9.9.3/js/jquery.fileupload-image.js">/* */</script>
-
+    </xsl:if>
 
     <script>
       <xsl:text>
@@ -6290,12 +6305,26 @@
         </a>
       </td>
       <td>
-
         <!--xsl:value-of select="@created"/-->
-        <xsl:call-template name="DD_Mon_YY">
-							<xsl:with-param name="date"><xsl:value-of select="@created"/></xsl:with-param>
-							<xsl:with-param name="showTime">true</xsl:with-param>
-					</xsl:call-template>
+        <xsl:choose>
+          <xsl:when test="Order/@InvoiceDateTime!=''">
+            <xsl:call-template name="DD_Mon_YY">
+              <xsl:with-param name="date">
+                <xsl:value-of select="Order/@InvoiceDateTime"/>
+              </xsl:with-param>
+              <xsl:with-param name="showTime">true</xsl:with-param>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="DD_Mon_YY">
+              <xsl:with-param name="date">
+                <xsl:value-of select="@created"/>
+              </xsl:with-param>
+              <xsl:with-param name="showTime">true</xsl:with-param>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
+ 
       </td>
       <td>
         <xsl:value-of select="@currencySymbol"/>&#160;<xsl:value-of select="format-number(Order/@total,'0.00')"/>
