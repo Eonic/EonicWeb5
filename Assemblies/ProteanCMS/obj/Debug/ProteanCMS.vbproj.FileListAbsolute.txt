@@ -315,6 +315,8 @@ D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\BundleTransformer.Core.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\BundleTransformer.Less.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\BundleTransformer.MicrosoftAjax.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\ClearScript.dll
+D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\CMPCDotNet.dll
+D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\EcmaScript.NET.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\Facebook.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\Fonet.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\ICSharpCode.SharpZipLib.dll
@@ -335,15 +337,14 @@ D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\Owin.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\PreMailer.Net.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\Protean.Tools.Csharp.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\React.Core.dll
+D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\System.Buffers.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\System.IdentityModel.Tokens.Jwt.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\System.Runtime.CompilerServices.Unsafe.dll
-D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\System.Text.Encoding.CodePages.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\System.Web.Optimization.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\Protean.Tools.Csharp.pdb
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\Protean.Tools.Csharp.dll.config
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\AlphaFS.pdb
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\AlphaFS.xml
-D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\AngleSharp.xml
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\Antlr3.Runtime.pdb
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\BundleTransformer.Core.xml
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\BundleTransformer.Less.xml
@@ -366,7 +367,6 @@ D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\Newtonsoft.Json.xml
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\React.Core.xml
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\System.IdentityModel.Tokens.Jwt.xml
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\System.Runtime.CompilerServices.Unsafe.xml
-D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\System.Text.Encoding.CodePages.xml
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\System.Web.Optimization.xml
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\ru-ru\BundleTransformer.Core.resources.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\ru-ru\BundleTransformer.Less.resources.dll
@@ -382,6 +382,3 @@ D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\obj\Debug\ProteanCMS.vbproj.Cop
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\obj\Debug\ProteanCMS.dll
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\obj\Debug\ProteanCMS.xml
 D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\obj\Debug\ProteanCMS.pdb
-D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\CMPCDotNet.dll
-D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\bin\EcmaScript.NET.dll
-D:\HostingSpaces\DevOpsGit\Assemblies\ProteanCMS\obj\Debug\ProteanCMS.vbproj.CoreCompileInputs.cache
