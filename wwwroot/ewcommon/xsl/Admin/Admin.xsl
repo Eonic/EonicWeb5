@@ -169,11 +169,8 @@
     </xsl:call-template>
       
     <xsl:apply-templates select="." mode="siteAdminJs"/>
-
     <xsl:apply-templates select="." mode="LayoutAdminJs"/>
-
     <xsl:apply-templates select="." mode="xform_control_scripts"/>
-  
   </xsl:template>
 
   <xsl:template match="Page" mode="LayoutAdminJs"></xsl:template>
@@ -923,7 +920,7 @@
      <xsl:apply-templates select="AdminMenu/descendant-or-self::MenuItem[descendant-or-self::MenuItem[@cmd=/Page/@ewCmd or contains(@subCmds,$subMenuCommand)]]" mode="adminLink"/>
   </xsl:template>
 
-  <xsl:template match="Page[@ewCmd='ByPage' or @ewCmd='Normal' or @ewCmd='Advanced' or @ewCmd='EditPage' or @ewCmd='EditPageLayout' or @ewCmd='EditPagePermissions' or @ewCmd='EditPageRights' or @ewCmd='LocateSearch']" mode="adminBreadcrumb">
+  <xsl:template match="Page[@ewCmd='ByPage' or @ewCmd='Normal' or @ewCmd='Advanced' or @ewCmd='EditPage' or @ewCmd='EditPageLayout' or @ewCmd='EditMailLayout'  or @ewCmd='EditPagePermissions' or @ewCmd='EditPageRights' or @ewCmd='LocateSearch']" mode="adminBreadcrumb">
     <xsl:if test="/Page/@id != ''">
       <xsl:apply-templates select="/Page/Menu/MenuItem" mode="adminBreadcrumbSt"/>
     </xsl:if>
@@ -1754,7 +1751,7 @@
     </div>
   </xsl:template>
   <!-- -->
-  <xsl:template match="Page[@layout='Advanced']" mode="Admin">
+  <xsl:template match="Page[@layout='Advanced' or @layout='AdvancedMail']" mode="Admin">
     <div class="row" id="tpltAdvancedMode">
       <div class="col-md-3">
         <div class="panel panel-default">
@@ -3423,27 +3420,30 @@
         </div>
       </div>
       <div class="col-md-9">
-        <div class="panel default-panel">
-          <div class="panel-heading">
-        <form action="{$appPath}?ewCmd=DiscountRules" class="ewXform" name="addDiscountRule" id="addDiscountRule" method="post" onsubmit="return form_check(this)">
-          Add Rule &#160;
-          <select name="newDiscountType" id="newDiscountType" class="required full">
+      <form action="{$appPath}?ewCmd=DiscountRules" class="ewXform well well-default" name="addDiscountRule" id="addDiscountRule" method="post" onsubmit="return form_check(this)">
+        <div class="input-group">
+	    <span class="input-group-addon">Add Rule &#160;</span>
+
+
+          <select name="newDiscountType" id="newDiscountType" class="required full form-control">
             <option value="">Select type</option>
-            <option value="1">Basic</option>
+            <option value="1">Basic Percentage Discount or Money Off</option>
             <option value="2">Product Quantity/Price Breaks</option>
             <option value="5">Group Quantity/Price Breaks</option>
             <option value="3">X for the Price of Y</option>
             <option value="4">Cheapest Item Free</option>
           </select>
-          &#160;
+          <span class="input-group-btn">
           <button type="submit" name="addNewDiscountRule" id="addNewDiscountRule"  value="Add" class="btn btn-success principle">
             <i class="fa fa-plus fa-white">
               <xsl:text> </xsl:text>
             </i><xsl:text> </xsl:text>Add
           </button>
-          <div class="terminus">&#160;</div>
+	  </span>
+	  </div>
         </form>
-          </div>
+        <div class="panel panel-default">
+ 
         <table cellpadding="0" cellspacing="1" class="table">
           <tr>
             <th></th>
@@ -3566,11 +3566,25 @@
             </tr>
               <tr>
                   <td>&#160;</td>
-                  <td colspan="4">
+                  <td colspan="1">
                       <strong>Start Date:</strong>
-                      <xsl:value-of select="@publishDate"/>
+		      &#160;
+                       <xsl:call-template name="DD_Mon_YYYY">
+                          <xsl:with-param name="date">
+                            <xsl:value-of select="@publishDate"/>
+                          </xsl:with-param>
+                          <xsl:with-param name="showTime">true</xsl:with-param>
+                        </xsl:call-template>
+                    </td>
+                    <td colspan="3">
                       <strong>Expire Date:</strong>
-                      <xsl:value-of select="@expireDate"/>
+		      &#160;
+                        <xsl:call-template name="DD_Mon_YYYY">
+                          <xsl:with-param name="date">
+                            <xsl:value-of select="@expireDate"/>
+                          </xsl:with-param>
+                          <xsl:with-param name="showTime">true</xsl:with-param>
+                        </xsl:call-template>
                   </td>
               </tr>
           </xsl:for-each>
@@ -4025,6 +4039,15 @@
     <xsl:variable name="submitPath">
       <xsl:apply-templates select="." mode="SubmitPath"/>
     </xsl:variable>
+
+    <xsl:variable name="pathonly">
+      <xsl:if test="$page/Request/QueryString/Item[@name='ewCmd2' and node()='PathOnly']">
+        <xsl:text>&amp;pathonly=true</xsl:text>
+      </xsl:if>
+      <xsl:if test="$page/Request/QueryString/Item[@name='pathonly' and node()='true']">
+        <xsl:text>&amp;pathonly=true</xsl:text>
+      </xsl:if>
+    </xsl:variable>
     
     <div id="template_FileSystem" class="panel panel-default">
       <div class="panel-heading">
@@ -4034,7 +4057,7 @@
          <ul class="pageControlButtons">
             <xsl:if test="not(contains(/Page/Request/QueryString/Item[@name='contentType'],'popup')) and not(@path='')">
             <li>
-              <a href="{$submitPath}ewcmd={/Page/@ewCmd}&amp;fld={parent::folder/@path}" class="btn btn-primary">
+              <a href="{$submitPath}ewcmd={/Page/@ewCmd}{$pathonly}&amp;fld={parent::folder/@path}" class="btn btn-primary">
                 <xsl:if test="$submitPath!='/?'">
                   <xsl:attribute name="data-toggle">modal</xsl:attribute>
                   <xsl:attribute name="data-target">
@@ -4050,7 +4073,7 @@
             </xsl:if>
             <xsl:if test="not(starts-with(/Page/Request/QueryString/Item[@name='fld']/node(),'\FreeStock'))">
               <li>
-                <a href="{$submitPath}ewcmd={/Page/@ewCmd}&amp;ewCmd2=addFolder&amp;fld={@path}" class="btn btn-success">
+                <a href="{$submitPath}ewcmd={/Page/@ewCmd}{$pathonly}&amp;ewCmd2=addFolder&amp;fld={@path}&amp;targetForm={/Page/Request/QueryString/Item[@name='targetForm']/node()}&amp;targetField={/Page/Request/QueryString/Item[@name='targetField']/node()}" class="btn btn-success">
                   <xsl:if test="$submitPath!='/?'">
                     <xsl:attribute name="data-toggle">modal</xsl:attribute>
                     <xsl:attribute name="data-target">
@@ -4155,7 +4178,7 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="Page[@ewCmd='EditContent' or @ewCmd='AddContent']" mode="LayoutAdminJs">
+  <xsl:template match="Page[@ewCmd='EditContent' or @ewCmd='AddContent' or @ewCmd='EditPage' or @ewCmd='AddPage' or @ewCmd='EditMailContent' or @ewCmd='AddMailModule']" mode="LayoutAdminJs">
     <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
     <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js">/* */</script>
     <!-- The Canvas to Blob plugin is included for image resizing functionality -->
