@@ -6213,20 +6213,33 @@
         </xsl:variable>
         
         <xsl:variable name="imageSize" select="ew:ImageSize($newSrc)"/>
-        <xsl:variable name="imageSize-xs" select="ew:ImageSize($newSrc-xs)"/>
-        <xsl:variable name="imageSize-sm" select="ew:ImageSize($newSrc-sm)"/>
-        <xsl:variable name="imageSize-md" select="ew:ImageSize($newSrc-md)"/>
 
-        <xsl:variable name="webpImagePath" select="ew:GetWebPImagePath($newSrc, '.webp')"/>
         <xsl:variable name="image">
           <picture>
-            <!--<xsl:if test="$webpImagePath != ''">
-              <source type="image/webp">
-                <xsl:attribute name="srcset">
-                  <xsl:value-of select="$webpImagePath"/>
+            <source type="image/webp">
+                <xsl:attribute name="media">
+                  (max-width: <xsl:value-of select="$max-width-sm"/>px)
                 </xsl:attribute>
-              </source>
-            </xsl:if>-->
+                <xsl:attribute name="srcset">
+                  <xsl:value-of select="ew:GetWebPImagePath($newSrc-sm, '.webp')"/>
+                </xsl:attribute>
+            </source>
+            <source type="image/webp">
+                <xsl:attribute name="media">
+                  (max-width: <xsl:value-of select="$max-width-md"/>px)
+                </xsl:attribute>
+                <xsl:attribute name="srcset">
+                  <xsl:value-of select="ew:GetWebPImagePath($newSrc-md, '.webp')"/>
+                </xsl:attribute>
+            </source>
+            <source type="image/webp">
+                <xsl:attribute name="media">
+                  (max-width: <xsl:value-of select="$max-width-xs"/>px)
+                </xsl:attribute>
+                <xsl:attribute name="srcset">
+                  <xsl:value-of select="ew:GetWebPImagePath($newSrc-xs, '.webp')"/>
+                </xsl:attribute>
+            </source>
             <img itemprop="image">
               <!-- SRC -->
               <xsl:choose>
@@ -6296,6 +6309,7 @@
             </img>
           </picture>
         </xsl:variable>
+        
         <xsl:copy-of select="ms:node-set($image)/*" />
       </xsl:if>
     </xsl:if>

@@ -1172,7 +1172,7 @@ Partial Public Module xmlTools
                                         Using bitMap As New Bitmap(goServer.MapPath(newFilepath))
                                             Using saveImageStream As FileStream = System.IO.File.Open(goServer.MapPath(webpFileName), FileMode.Create)
                                                 Dim encoder As New SimpleEncoder
-                                                encoder.Encode(bitMap, saveImageStream, 20)
+                                                encoder.Encode(bitMap, saveImageStream, 100)
                                             End Using
                                         End Using
                                         Return webpFileName
